@@ -21,6 +21,7 @@ export default function LoginNavigation() {
                     name="Register"
                     component={Register}
                     options={{
+                        title : "Inscription"
                     }}
                 />
             </Stack.Navigator>

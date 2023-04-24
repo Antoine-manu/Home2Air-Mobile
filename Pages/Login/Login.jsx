@@ -25,6 +25,7 @@ export default function Login({navigation}) {
             margin: 12,
             marginTop: 16,
             elevation: 5,
+            paddingLeft: 18,
             shadowColor: 'black',
             shadowOffset: {
                 width: 6,
