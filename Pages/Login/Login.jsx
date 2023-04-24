@@ -6,15 +6,18 @@ import {
 	TextInput,
 	TouchableOpacity
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { theme } from '../../assets/styles/style';
+import {UserContext} from "../../Context/UserContext";
 export default function Login({ navigation }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const [jsonData, setJsonData] = useState({});
+	const userContext = useContext(UserContext);
+	console.log(userContext)
 
 	const fetchWithTimeout = (resource, options, timeout = 5000) => {
 		return Promise.race([
@@ -56,8 +59,8 @@ export default function Login({ navigation }) {
 			console.log('ok');
 			const json = await response.json();
 			setJsonData(json);
-			AsyncStorage.setItem('token', jsonData.token);
-			AsyncStorage.setItem('userId', JSON.stringify(jsonData.userId));
+			userContext.setToken(jsonData.token);
+			userContext.setID(JSON.stringify(jsonData.userId));
 			// Handle the response, e.g., navigate to another screen
 			setConnected(true);
 		} catch (error) {

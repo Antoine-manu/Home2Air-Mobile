@@ -1,14 +1,29 @@
 import {theme} from "./assets/styles/style";
 import { StyleSheet, Text, View } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import LoginNavigation from "./Navigations/LoginNavigation";
-import Navigation from "./Navigations/Navigation";
+import Navigation from "./Navigations/LoginNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {UserContext} from "./Context/UserContext";
+import {useState} from "react";
 
 export default function App() {
+
+    const [id, setID] = useState(null);
+    const [token, setToken] = useState(null);
+
   return (
       <>
           <NavigationContainer>
-              <Navigation/>
+              <UserContext.Provider
+                value={{
+                    id: id,
+                    setID : setID,
+                    token : token,
+                    setToken : setToken
+                }}
+              >
+                <Navigation/>
+              </UserContext.Provider>
           </NavigationContainer>
       </>
   );
