@@ -1,5 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../Pages/Home';
+import CreateSensor from '../Pages/Sensors/Create';
 
 export default function Navigation() {
 
@@ -15,6 +16,10 @@ export default function Navigation() {
                 options={{
                     headerShown:false,
                 }}
+            />
+            <Stack.Screen
+                name="CreateSensor"
+                component={CreateSensor}
             />
         </Stack.Navigator>
     )
