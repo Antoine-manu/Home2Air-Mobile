@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../Pages/Login';
 import Register from '../Pages/Register';
 import Home from "../Pages/Home";
+import CreateSensor from "../Pages/Sensors/Create";
+import EditSensor from "../Pages/Sensors/Edit";
 import {UserContext} from "../Context/UserContext";
 import {useContext} from "react";
 
@@ -28,13 +30,29 @@ export default function LoginNavigation() {
 				/>
 			</Stack.Group>
 				:
-			<Stack.Screen
-				name="Home"
-				component={Home}
-				options={{
-					headerShown:false,
-				}}
-			/>
+			<Stack.Group>
+				<Stack.Screen
+					name="Home"
+					component={Home}
+					options={{
+						headerShown:false,
+					}}
+				/>
+				<Stack.Screen
+					name="CreateSensor"
+					component={CreateSensor}
+					options={{
+						title:"Créer un capteur",
+					}}
+				/>
+				<Stack.Screen
+					name="EditSensor"
+					component={EditSensor}
+					options={{
+						title:"Editer un capteur",
+					}}
+				/>
+			</Stack.Group>
 			}
 		</Stack.Navigator>
 	);

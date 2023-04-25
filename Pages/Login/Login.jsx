@@ -1,3 +1,4 @@
+import React, { useContext, useState } from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -6,71 +7,52 @@ import {
 	TextInput,
 	TouchableOpacity
 } from 'react-native';
-import React, {useContext, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { theme } from '../../assets/styles/style';
-import {UserContext} from "../../Context/UserContext";
+import * as SecureStore from 'expo-secure-store';
+import { theme, color } from '../../assets/styles/style';
+import { UserContext } from '../../Context/UserContext';
+import fetchRoute from '../../Utils/auth';
+
 export default function Login({ navigation }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
-	const [jsonData, setJsonData] = useState({});
 	const userContext = useContext(UserContext);
-	console.log(userContext)
 
-	const fetchWithTimeout = (resource, options, timeout = 5000) => {
-		return Promise.race([
-			fetch(resource, options),
-			new Promise((_, reject) =>
-				setTimeout(() => reject(new Error('Request timed out')), timeout)
-			)
-		]);
+	const saveUserData = async (key, value) => {
+		await SecureStore.setItemAsync(key, value);
 	};
 
-	const loginTest = async () => {
-		setError(null);
-		setConnected(false);
-
+	const loginUser = async (email, password) => {
 		try {
-			// const hash = crypto.createHash('sha256');
-			// hash.update(password);
-			// const hashedPassword = hash.digest('hex');
-			const response = await fetchWithTimeout(
-				'http://192.168.1.237:6500/auth/login',
-				{
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						email: email,
-						password: password
-					})
-				}
-			);
+			const jsonData = await fetchRoute('auth/login', 'POST', {
+				email,
+				password
+			});
 
-			if (!response.ok) {
-				throw new Error(
-					`HTTP error: ${response.status} ${response.statusText}`
-				);
+			await saveUserData('userId', JSON.stringify(jsonData.userId));
+			await saveUserData('token', JSON.stringify(jsonData.token));
+
+			const userId = await SecureStore.getItemAsync('userId');
+			const token = await SecureStore.getItemAsync('token');
+
+			if (userId && token) {
+				userContext.setID(userId);
+				userContext.setToken(token);
+				setConnected(true);
 			}
-			console.log('ok');
-			const json = await response.json();
-			setJsonData(json);
-			userContext.setToken(jsonData.token);
-			userContext.setID(JSON.stringify(jsonData.userId));
-			// Handle the response, e.g., navigate to another screen
-			setConnected(true);
 		} catch (error) {
-			console.error(
-				'There has been a problem with your fetch operation:',
-				error.message
-			);
+			console.error(error.message);
 			setError(error.message);
 		}
 	};
+
+	const handleLogin = () => {
+		setError(null);
+		setConnected(false);
+		loginUser(email, password);
+	};
+
 	const styles = StyleSheet.create({
 		logo: {
 			width: 380,
@@ -109,7 +91,7 @@ export default function Login({ navigation }) {
 		},
 		btn: {
 			marginTop: 24,
-			backgroundColor: theme.primary,
+			backgroundColor: color.primary,
 			padding: 12,
 			paddingLeft: 48,
 			paddingRight: 48,
@@ -122,7 +104,7 @@ export default function Login({ navigation }) {
 			marginTop: 16
 		},
 		forgetpasswordText: {
-			color: theme.primary
+			color: color.primary
 		},
 		add: {
 			marginTop: 'auto',
@@ -130,7 +112,7 @@ export default function Login({ navigation }) {
 			flexDirection: 'row'
 		},
 		addText: {
-			color: theme.primary
+			color: color.primary
 		}
 	});
 
@@ -147,20 +129,23 @@ export default function Login({ navigation }) {
 					style={styles.input}
 					onChangeText={setEmail}
 					value={email}
-					placeholder="Identifiant"
+					keyboardType="email-address"
+					placeholder="Adresse mail"
 				/>
+
 				<TextInput
 					style={styles.input}
 					onChangeText={setPassword}
 					value={password}
 					placeholder="Mot de passe"
+					secureTextEntry
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
 				{connected && <Text style={styles.success}>Connecté</Text>}
 			</View>
 
 			<TouchableOpacity style={styles.btn}>
-				<Text style={styles.btnText} onPress={loginTest}>
+				<Text style={styles.btnText} onPress={handleLogin}>
 					Se connecter
 				</Text>
 			</TouchableOpacity>
