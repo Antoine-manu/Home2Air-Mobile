@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { theme } from '../../assets/styles/style';
+import { theme, color } from '../../assets/styles/style';
 import {UserContext} from "../../Context/UserContext";
 export default function Login({ navigation }) {
 	const [email, setEmail] = useState('');
@@ -109,7 +109,7 @@ export default function Login({ navigation }) {
 		},
 		btn: {
 			marginTop: 24,
-			backgroundColor: theme.primary,
+			backgroundColor: color.primary,
 			padding: 12,
 			paddingLeft: 48,
 			paddingRight: 48,
@@ -122,7 +122,7 @@ export default function Login({ navigation }) {
 			marginTop: 16
 		},
 		forgetpasswordText: {
-			color: theme.primary
+			color: color.primary
 		},
 		add: {
 			marginTop: 'auto',
@@ -130,7 +130,7 @@ export default function Login({ navigation }) {
 			flexDirection: 'row'
 		},
 		addText: {
-			color: theme.primary
+			color: color.primary
 		}
 	});
 

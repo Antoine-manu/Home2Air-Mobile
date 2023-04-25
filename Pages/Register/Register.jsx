@@ -8,7 +8,7 @@ import {
 	TouchableOpacity
 } from 'react-native';
 import React, { useState } from 'react';
-import { theme } from '../../assets/styles/style';
+import { theme, color } from '../../assets/styles/style';
 export default function Register({ data }) {
 	const [username, setUsername] = useState('');
 	const [firstname, setFirstName] = useState('');
@@ -106,7 +106,7 @@ export default function Register({ data }) {
 		},
 		btn: {
 			marginTop: 24,
-			backgroundColor: theme.primary,
+			backgroundColor: color.primary,
 			padding: 12,
 			paddingLeft: 48,
 			paddingRight: 48,
