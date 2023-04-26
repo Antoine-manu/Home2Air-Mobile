@@ -33,7 +33,6 @@ export default function Register({ data }) {
 			if (form.confirmed !== form.password) {
 				throw new Error('Les mots de passe sont différents');
 			}
-
 			const response = await fetchRoute('user/create', 'POST', {
 				username: form.username,
 				first_name: form.firstname,
@@ -41,6 +40,7 @@ export default function Register({ data }) {
 				email: form.email,
 				password: form.password
 			});
+			console.log(response.ok);
 
 			if (!response.ok) {
 				throw new Error(
@@ -48,6 +48,7 @@ export default function Register({ data }) {
 				);
 			}
 			const json = await response.json();
+			console.log(json);
 			// Handle the response, e.g., navigate to another screen
 			setRegistered(true);
 		} catch (error) {
@@ -85,6 +86,7 @@ export default function Register({ data }) {
 		inputBox: {
 			marginTop: 26
 		},
+
 		btn: {
 			marginTop: 24,
 			backgroundColor: color.primary,

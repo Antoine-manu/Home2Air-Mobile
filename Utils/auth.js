@@ -1,4 +1,4 @@
-const HOST = 'http://192.168.1.223:6500/api/v1';
+const HOST = 'http://192.168.1.237:6500/';
 const fetchWithTimeout = (resource, options, timeout = 5000) => {
 	return Promise.race([
 		fetch(resource, options),
