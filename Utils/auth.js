@@ -1,4 +1,4 @@
-const HOST = 'http://192.168.1.237:6500/';
+const HOST = 'http://192.168.1.237:6500/api/v1/';
 const fetchWithTimeout = (resource, options, timeout = 5000) => {
 	return Promise.race([
 		fetch(resource, options),
@@ -10,7 +10,7 @@ const fetchWithTimeout = (resource, options, timeout = 5000) => {
 
 export default async function fetchRoute(route, method, params) {
 	const url = new URL(route, HOST);
-
+console.log(url, route, method, params)
 	try {
 		const response = await fetchWithTimeout(url.toString(), {
 			method: `${method}`,

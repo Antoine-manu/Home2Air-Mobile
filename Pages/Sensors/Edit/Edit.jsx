@@ -56,7 +56,7 @@ export default function EditSensor({navigation, route}) {
             height: "15%",
             marginTop : "auto",
             bottom: 0,
-            position: "fixed",
+            // position: "fixed",
             alignItems: "center",
             justifyContent: "flex-start"
         },
