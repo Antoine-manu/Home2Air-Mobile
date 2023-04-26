@@ -56,7 +56,7 @@ export default function smallSensor() {
                     <TouchableOpacity style={styles.smallSensorLayout.right.gear} onPress={() => navigation.navigate('EditSensor', {id : 2})}>
                         <FontAwesome name="gear" size={24} style={styles.smallSensorLayout.right.gear.icon}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[theme.btn, styles.btnSmall]}>
+                    <TouchableOpacity style={[theme.btn, styles.btnSmall]} onPress={() => navigation.navigate('Sensor', {id : 2, name : "Salon"})}>
                         <Text style={[theme.btnText, styles.btnSmallText]} >
                             Voir
                         </Text>

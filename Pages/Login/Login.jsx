@@ -144,8 +144,8 @@ export default function Login({ navigation }) {
 				{connected && <Text style={styles.success}>Connecté</Text>}
 			</View>
 
-			<TouchableOpacity style={styles.btn}>
-				<Text style={styles.btnText} onPress={handleLogin}>
+			<TouchableOpacity style={styles.btn} onPress={handleLogin}>
+				<Text style={styles.btnText} >
 					Se connecter
 				</Text>
 			</TouchableOpacity>
