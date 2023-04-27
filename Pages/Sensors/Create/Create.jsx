@@ -8,19 +8,51 @@ import {
 	TouchableOpacity
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
-import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../../Context/UserContext';
 import Text from "../../../Components/Text";
-import {useContext, useState} from 'react';
-import {UserContext} from "../../../Context/UserContext";
+import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
+import { useState, useEffect, useContext } from 'react';
+import { fetchRoute } from '../../../Utils/auth';
+
 export default function CreateSensor() {
-	// const navigation = useNavigation();
-	// const [name, setName] = useState('');
-	const [room, setRoom] = useState('');
-	// const [space, setSpace] = useState('');
-	// const [reference, setReference] = useState('');
+	const [name, setName] = useState('');
+	const [room, setRoom] = useState(0);
+	const [rooms, setRooms] = useState([]);
+	const [reference, setReference] = useState('');
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme
+
+	const getAllRooms = async () => {
+		// const tk = ;
+		const r = await fetchRoute('room/find-all', 'post', {}, userContext.token);
+		setRooms(r);
+	};
+
+	useEffect(() => {
+		getAllRooms();
+	}, []);
+
+	const createSensor = async () => {
+		const createdBy = `${userContext.userId}`;
+		const room_id = room;
+		const jsonData = {
+			name,
+			room_id,
+			reference,
+			createdBy
+		};
+		const response = await fetchRoute(
+			'sensor/create',
+			'POST',
+			jsonData,
+			userContext.token
+		);
+		console.log('response', response);
+	};
+
+	const pickerItems = rooms.map((r) => {
+		return { label: `${r.name}`, value: `${r.id}` };
+	});
 
 	const styles = StyleSheet.create({
 		content : {
@@ -58,7 +90,6 @@ export default function CreateSensor() {
 			display: 'none'
 		}
 	});
-
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<View style={styles.inputGroup}>
@@ -67,34 +98,41 @@ export default function CreateSensor() {
 					style={[theme[mode].input, styles.input]}
 					placeholder="Ex : Home"
 					placeholderTextColor={color[mode].text}
+					onChangeText={setName}
+					value={name}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Piece</Text>
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
-					items={[
-						{ label: '-Salon-', value: 'Salon' },
-						{ label: '-Chambre-', value: 'Chambre' }
-					]}
+					items={pickerItems}
 					style={pickerSelectStyles[mode]}
 				/>
-				<TextInput style={styles.hidden} defaultValue={room} />
+				<TextInput
+					style={styles.hidden}
+					defaultValue={toString(room)}
+					value={room}
+					placeholderTextColor={color[mode].text}
+				/>
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Référence</Text>
 				<TextInput
 					style={[theme[mode].input, styles.input]}
 					placeholder="Référence"
+					onChangeText={setReference}
+					value={reference}
 					placeholderTextColor={color[mode].text}
 				/>
 			</View>
 			<View style={styles.bottom}>
 				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
-					<Text style={theme[mode].btnText}>Créer le capteur</Text>
+					<Text style={theme[mode].btnText} onPress={createSensor}>
+						Créer le capteur
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</ScrollView>
 	);
 }
-

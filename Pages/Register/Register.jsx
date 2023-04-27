@@ -43,7 +43,6 @@ export default function Register({ data }) {
 				email: form.email,
 				password: form.password
 			});
-			console.log(response.ok);
 
 			if (!response.ok) {
 				throw new Error(
@@ -51,7 +50,6 @@ export default function Register({ data }) {
 				);
 			}
 			const json = await response.json();
-			console.log(json);
 			// Handle the response, e.g., navigate to another screen
 			setRegistered(true);
 		} catch (error) {

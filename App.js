@@ -7,7 +7,6 @@ import {UserContext} from "./Context/UserContext";
 import {useState} from "react";
 
 export default function App() {
-
     const [id, setID] = useState(null);
     const [token, setToken] = useState(null);
     const [isDark, setIsDark] = useState("dark");
@@ -38,11 +37,3 @@ export default function App() {
       </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
