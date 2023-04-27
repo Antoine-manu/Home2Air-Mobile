@@ -1,10 +1,16 @@
-import {StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TextInput, Button, TouchableOpacity} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import Text from "./Text";
 import {theme, color} from "../assets/styles/style";
 import {useNavigation} from "@react-navigation/native";
+import {useContext} from "react";
+import {UserContext} from "../Context/UserContext";
 export default function smallSensor() {
 
     const navigation = useNavigation();
+    const userContext = useContext(UserContext);
+    const mode = userContext.theme
+
     const styles = {
         btnSmall : {
             height : 32,
@@ -20,7 +26,7 @@ export default function smallSensor() {
             height: 110,
             padding: 16 ,
             borderRadius: 16,
-            backgroundColor: '#f7f7f7',
+            backgroundColor: color[mode].modalBg,
             flexDirection: "row",
             justifyContent: "space-between"
         },
@@ -38,7 +44,8 @@ export default function smallSensor() {
                 gear : {
                     width : "100%",
                     icon : {
-                        alignSelf: "flex-end"
+                        alignSelf: "flex-end",
+                        color : color[mode].text
                     }
                 }
             }
@@ -47,7 +54,7 @@ export default function smallSensor() {
 
     return(
         <>
-            <View style={[styles.smallSensor, theme.shadow]}>
+            <View style={[styles.smallSensor, theme[mode].shadow]}>
                 <View style={styles.smallSensorLayout.left}>
                     <Text style={styles.smallSensorLayout.left.textLayout}>Capteur -locate-</Text>
                     <Text style={styles.smallSensorLayout.left.textLayout}>-data- AQI</Text>
@@ -56,8 +63,8 @@ export default function smallSensor() {
                     <TouchableOpacity style={styles.smallSensorLayout.right.gear} onPress={() => navigation.navigate('EditSensor', {id : 2})}>
                         <FontAwesome name="gear" size={24} style={styles.smallSensorLayout.right.gear.icon}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[theme.btn, styles.btnSmall]} onPress={() => navigation.navigate('Sensor', {id : 2, name : "Salon"})}>
-                        <Text style={[theme.btnText, styles.btnSmallText]} >
+                    <TouchableOpacity style={[theme[mode].btn, styles.btnSmall]} onPress={() => navigation.navigate('Sensor', {id : 2, name : "Salon"})}>
+                        <Text style={[theme[mode].btnText, styles.btnSmallText]} >
                             Voir
                         </Text>
                     </TouchableOpacity>

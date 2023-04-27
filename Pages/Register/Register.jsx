@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import {
 	StyleSheet,
-	Text,
 	View,
 	TextInput,
-	TouchableOpacity
+	TouchableOpacity, ScrollView
 } from 'react-native';
 import { theme, color } from '../../assets/styles/style';
 import fetchRoute from '../../Utils/auth';
+import {UserContext} from "../../Context/UserContext";
+import Text from "../../Components/Text";
 
 export default function Register({ data }) {
 	const [form, setForm] = useState({
@@ -20,6 +21,8 @@ export default function Register({ data }) {
 	});
 	const [error, setError] = useState(null);
 	const [registered, setRegistered] = useState(false);
+	const userContext = useContext(UserContext);
+	const mode = userContext.theme
 
 	const handleChange = (name, value) => {
 		setForm({ ...form, [name]: value });
@@ -61,26 +64,15 @@ export default function Register({ data }) {
 	};
 
 	const styles = StyleSheet.create({
-		container: {
-			alignItems: 'center',
-			flex: 1
-		},
 		input: {
 			width: 300,
 			height: 40,
-			backgroundColor: '#f7f7f7',
+			backgroundColor: color[mode].secondaryBackground,
 			borderRadius: 32,
 			margin: 12,
 			marginTop: 16,
 			paddingLeft: 18,
 			elevation: 5,
-			shadowColor: 'black',
-			shadowOffset: {
-				width: 6,
-				height: 6
-			},
-			shadowOpacity: 0.1,
-			shadowRadius: 8,
 			padding: 10
 		},
 		inputBox: {
@@ -89,7 +81,7 @@ export default function Register({ data }) {
 
 		btn: {
 			marginTop: 24,
-			backgroundColor: color.primary,
+			backgroundColor: color[mode].primary,
 			padding: 12,
 			paddingLeft: 48,
 			paddingRight: 48,
@@ -101,7 +93,7 @@ export default function Register({ data }) {
 	});
 
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={theme[mode].container}>
 			<View style={styles.inputBox}>
 				{[
 					'username',
@@ -113,7 +105,7 @@ export default function Register({ data }) {
 				].map((field, index) => (
 					<TextInput
 						key={index}
-						style={styles.input}
+						style={theme[mode].input}
 						onChangeText={(value) => handleChange(field, value)}
 						value={form[field]}
 						placeholder={
@@ -126,6 +118,7 @@ export default function Register({ data }) {
 								confirmed: 'Confirmer le mot de passe'
 							}[field]
 						}
+						placeholderTextColor={color[mode].text}
 						secureTextEntry={['password', 'confirmed'].includes(field)}
 					/>
 				))}
@@ -138,6 +131,6 @@ export default function Register({ data }) {
 			</TouchableOpacity>
 			{error && <Text style={styles.errorText}>{error}</Text>}
 			{registered && <Text style={styles.success}>Enregistré</Text>}
-		</View>
+		</ScrollView>
 	);
 }
