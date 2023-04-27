@@ -1,32 +1,34 @@
 import CircularProgress from "react-native-circular-progress-indicator";
-import {StyleSheet, Text, useWindowDimensions, View} from "react-native";
-import {color} from "../../../assets/styles/style";
+import {StyleSheet, useWindowDimensions, View, ScrollView} from "react-native";
+import {color, theme} from "../../../assets/styles/style";
 import {FontAwesome, FontAwesome5, MaterialCommunityIcons, Feather} from '@expo/vector-icons';
 import {LineChart} from "react-native-chart-kit";
+import {useContext} from "react";
+import Text from "../../../Components/Text";
+import {UserContext} from "../../../Context/UserContext";
 
 export default function Sensor(){
 
+    const userContext = useContext(UserContext);
+    const mode = userContext.theme
     const Dimensions = useWindowDimensions();
     console.log(Dimensions)
 
     const styles = StyleSheet.create({
-        container : {
-            width: "100%",
-            alignItems: "center",
-            paddingTop: 32
+        content : {
+            marginTop: 24
         },
         qualityText : {
-
             marginTop: 24,
             alignItems: "center",
             title : {
                 fontSize: 24,
                 fontWeight: "bold",
-                color: color.red
+                color: color[mode].red
             },
             subtitle : {
                 fontSize: 16,
-                color: color.darkgrey
+                color: color[mode].darkgrey
             },
         },
         tags: {
@@ -40,13 +42,13 @@ export default function Sensor(){
                 flexDirection: "row",
                 alignItems: "center",
                 icon: {
-                    color :color.primary
+                    color :color[mode].primary
                 },
                 text : {
-                    font : 16,
+                    fontSize : 16,
                     marginStart: 6,
                     fontWeight: "bold",
-                    color :color.primary
+                    color :color[mode].primary
                 }
             }
         },
@@ -62,16 +64,16 @@ export default function Sensor(){
     })
 
     return(
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
             <CircularProgress
                 value={50}
                 maxValue={200}
                 radius={140}
                 duration={1000}
-                activeStrokeColor={color.red}
-                inActiveStrokeColor={color.grey}
+                activeStrokeColor={color[mode].red}
+                inActiveStrokeColor={color[mode].grey}
                 title={'AQI'}
-                titleColor={'black'}
+                titleColor={color[mode].text}
                 titleStyle={{fontWeight: 'bold'}}
             />
             <View style={styles.qualityText}>
@@ -118,8 +120,8 @@ export default function Sensor(){
                 withHorizontalLabels={false}
                 chartConfig={{
                     backgroundColor: "#e26a00",
-                    backgroundGradientFrom: color.primary,
-                    backgroundGradientTo: color.primary,
+                    backgroundGradientFrom: color[mode].primary,
+                    backgroundGradientTo: color[mode].primary,
                     decimalPlaces: 2, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -142,6 +144,6 @@ export default function Sensor(){
                 }}
             />
 
-        </View>
+        </ScrollView>
     )
 }

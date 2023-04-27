@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import {
 	StyleSheet,
-	Text,
 	View,
 	Image,
 	TextInput,
-	TouchableOpacity
+	TouchableOpacity, ScrollView
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import Text from "../../Components/Text";
 import { theme, color } from '../../assets/styles/style';
 import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
@@ -18,6 +18,7 @@ export default function Login({ navigation }) {
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
+	const mode = userContext.theme
 
 	const saveUserData = async (key, value) => {
 		await SecureStore.setItemAsync(key, value);
@@ -70,14 +71,12 @@ export default function Login({ navigation }) {
 	};
 
 	const styles = StyleSheet.create({
+		content : {
+			marginTop: 80
+		},
 		logo: {
 			width: 380,
 			height: 60
-		},
-		container: {
-			marginTop: 120,
-			alignItems: 'center',
-			flex: 1
 		},
 		text: {
 			marginTop: 30,
@@ -87,19 +86,12 @@ export default function Login({ navigation }) {
 		input: {
 			width: 300,
 			height: 40,
-			backgroundColor: '#f7f7f7',
+			backgroundColor: color[mode].secondaryBackground,
 			borderRadius: 32,
 			margin: 12,
 			marginTop: 16,
 			elevation: 5,
 			paddingLeft: 18,
-			shadowColor: 'black',
-			shadowOffset: {
-				width: 6,
-				height: 6
-			},
-			shadowOpacity: 0.1,
-			shadowRadius: 8,
 			padding: 10
 		},
 		inputBox: {
@@ -107,20 +99,20 @@ export default function Login({ navigation }) {
 		},
 		btn: {
 			marginTop: 24,
-			backgroundColor: color.primary,
+			backgroundColor: color[mode].primary,
 			padding: 12,
 			paddingLeft: 48,
 			paddingRight: 48,
 			borderRadius: 32
 		},
 		btnText: {
-			color: '#FFFFFF'
+			color: color[mode].light
 		},
 		forgetpassword: {
 			marginTop: 16
 		},
 		forgetpasswordText: {
-			color: color.primary
+			color: color[mode].primary
 		},
 		add: {
 			marginTop: 'auto',
@@ -128,12 +120,12 @@ export default function Login({ navigation }) {
 			flexDirection: 'row'
 		},
 		addText: {
-			color: color.primary
+			color: color[mode].primary
 		}
 	});
 
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<Image
 				style={styles.logo}
 				resizeMode={'contain'}
@@ -142,19 +134,21 @@ export default function Login({ navigation }) {
 			<Text style={styles.text}>Se connecter pour continuer</Text>
 			<View style={styles.inputBox}>
 				<TextInput
-					style={styles.input}
+					style={theme[mode].input}
 					onChangeText={setEmail}
 					value={email}
 					keyboardType="email-address"
 					placeholder="Adresse mail"
+					placeholderTextColor={color[mode].text}
 				/>
 
 				<TextInput
-					style={styles.input}
+					style={theme[mode].input}
 					onChangeText={setPassword}
 					value={password}
 					placeholder="Mot de passe"
 					secureTextEntry
+					placeholderTextColor={color[mode].text}
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
 				{connected && <Text style={styles.success}>Connecté</Text>}
@@ -179,6 +173,6 @@ export default function Login({ navigation }) {
 					<Text style={styles.addText}>Inscrivez vous</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }

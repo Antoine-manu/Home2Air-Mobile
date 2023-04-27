@@ -1,12 +1,15 @@
 import {
 	StyleSheet,
-	Text,
 	View,
+	Image,
 	TextInput,
+	Button,
+	ScrollView,
 	TouchableOpacity
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { UserContext } from '../../../Context/UserContext';
+import Text from "../../../Components/Text";
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { useState, useEffect, useContext } from 'react';
 import { fetchRoute } from '../../../Utils/auth';
@@ -17,6 +20,7 @@ export default function CreateSensor() {
 	const [rooms, setRooms] = useState([]);
 	const [reference, setReference] = useState('');
 	const userContext = useContext(UserContext);
+	const mode = userContext.theme
 
 	const getAllRooms = async () => {
 		// const tk = ;
@@ -50,13 +54,50 @@ export default function CreateSensor() {
 		return { label: `${r.name}`, value: `${r.id}` };
 	});
 
+	const styles = StyleSheet.create({
+		content : {
+			width: "90%",
+			alignSelf: "center"
+		},
+		input: {
+			width: '100%',
+			margin: 0,
+		},
+		inputGroup: {
+			alignItems: 'flex-start',
+			width: '100%',
+			marginTop: 24
+		},
+		label: {
+			marginBottom: -10
+		},
+		bottom: {
+			backgroundColor: color[mode].background,
+			zIndex: 10,
+			width: '100%',
+			height: '15%',
+			marginTop: 'auto',
+			bottom: 0,
+			// position: "fixed",
+			alignItems: 'center',
+			justifyContent: 'flex-start'
+		},
+		btn: {
+			width: 250,
+			alignItems: 'center'
+		},
+		hidden: {
+			display: 'none'
+		}
+	});
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Nom</Text>
 				<TextInput
-					style={[theme.input, styles.input]}
+					style={[theme[mode].input, styles.input]}
 					placeholder="Ex : Home"
+					placeholderTextColor={color[mode].text}
 					onChangeText={setName}
 					value={name}
 				/>
@@ -66,68 +107,32 @@ export default function CreateSensor() {
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
 					items={pickerItems}
-					style={pickerSelectStyles}
+					style={pickerSelectStyles[mode]}
 				/>
 				<TextInput
 					style={styles.hidden}
 					defaultValue={toString(room)}
 					value={room}
+					placeholderTextColor={color[mode].text}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Référence</Text>
 				<TextInput
-					style={[theme.input, styles.input]}
+					style={[theme[mode].input, styles.input]}
 					placeholder="Référence"
 					onChangeText={setReference}
 					value={reference}
+					placeholderTextColor={color[mode].text}
 				/>
 			</View>
 			<View style={styles.bottom}>
-				<TouchableOpacity style={[theme.btn, styles.btn]}>
-					<Text style={theme.btnText} onPress={createSensor}>
+				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
+					<Text style={theme[mode].btnText} onPress={createSensor}>
 						Créer le capteur
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
-const styles = StyleSheet.create({
-	input: {
-		width: '100%',
-		margin: 0
-	},
-	inputGroup: {
-		alignItems: 'flex-start',
-		width: '100%',
-		marginTop: 24
-	},
-	label: {
-		marginBottom: -10
-	},
-	container: {
-		width: '80%',
-		marginLeft: '10%',
-		alignItems: 'center',
-		flex: 1
-	},
-	bottom: {
-		backgroundColor: color.background,
-		zIndex: 10,
-		width: '100%',
-		height: '15%',
-		marginTop: 'auto',
-		bottom: 0,
-		// position: "fixed",
-		alignItems: 'center',
-		justifyContent: 'flex-start'
-	},
-	btn: {
-		width: 250,
-		alignItems: 'center'
-	},
-	hidden: {
-		display: 'none'
-	}
-});
