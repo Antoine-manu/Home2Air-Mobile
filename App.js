@@ -13,7 +13,7 @@ export default function App() {
             background: color.background
         },
     };
-    const [id, setID] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [token, setToken] = useState(null);
 
   return (
@@ -23,8 +23,8 @@ export default function App() {
           >
               <UserContext.Provider
                 value={{
-                    id: id,
-                    setID : setID,
+                    userId: userId,
+                    setUserId: setUserId,
                     token : token,
                     setToken : setToken
                 }}

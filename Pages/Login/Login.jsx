@@ -10,11 +10,11 @@ import {
 import * as SecureStore from 'expo-secure-store';
 import { theme, color } from '../../assets/styles/style';
 import { UserContext } from '../../Context/UserContext';
-import fetchRoute from '../../Utils/auth';
+import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
 
 export default function Login({ navigation }) {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('Daveloper@test.com');
+	const [password, setPassword] = useState('test');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
@@ -23,22 +23,27 @@ export default function Login({ navigation }) {
 		await SecureStore.setItemAsync(key, value);
 	};
 
-	const loginUser = async (email, password) => {
+	const loginUser = async () => {
 		try {
 			const jsonData = await fetchRoute('auth/login', 'POST', {
 				email,
 				password
 			});
 
-			await saveUserData('userId', JSON.stringify(jsonData.userId));
-			await saveUserData('token', JSON.stringify(jsonData.token));
-
-			const userId = await SecureStore.getItemAsync('userId');
-			const token = await SecureStore.getItemAsync('token');
+			let userId, token;
+			try {
+				userId = jsonData.userId;
+				token = jsonData.token;
+			} catch (err) {
+				console.error('Error parsing JSON:', err);
+			}
 
 			if (userId && token) {
-				userContext.setID(userId);
+				await saveUserData('userId', JSON.stringify(userId));
+				await saveUserData('token', JSON.stringify(token));
+				userContext.setUserId(userId);
 				userContext.setToken(token);
+				console.log('uc final', userContext);
 				setConnected(true);
 			}
 		} catch (error) {
@@ -49,8 +54,19 @@ export default function Login({ navigation }) {
 
 	const handleLogin = () => {
 		setError(null);
+		async () => {
+			const t = fetchFromStorage('token');
+			const uid = fetchFromStorage('userId');
+			console.log('out --- ', t, uid);
+			userContext.setUserId(uid);
+			userContext.setToken(t);
+		};
+		console.log('uc', userContext);
 		setConnected(false);
-		loginUser(email, password);
+		if (!userContext.token || !userContext.userId) {
+			console.log('ça part');
+			loginUser();
+		} // modify this line to remove email and password argument
 	};
 
 	const styles = StyleSheet.create({

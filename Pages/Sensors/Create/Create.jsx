@@ -2,21 +2,53 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Image,
 	TextInput,
-	Button,
 	TouchableOpacity
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { UserContext } from '../../../Context/UserContext';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { fetchRoute } from '../../../Utils/auth';
+
 export default function CreateSensor() {
-	// const navigation = useNavigation();
-	// const [name, setName] = useState('');
-	const [room, setRoom] = useState('');
-	// const [space, setSpace] = useState('');
-	// const [reference, setReference] = useState('');
+	const [name, setName] = useState('');
+	const [room, setRoom] = useState(0);
+	const [rooms, setRooms] = useState([]);
+	const [reference, setReference] = useState('');
+	const userContext = useContext(UserContext);
+
+	const getAllRooms = async () => {
+		// const tk = ;
+		const r = await fetchRoute('room/find-all', 'post', {}, userContext.token);
+		setRooms(r);
+	};
+
+	useEffect(() => {
+		getAllRooms();
+	}, []);
+
+	const createSensor = async () => {
+		const createdBy = `${userContext.userId}`;
+		const room_id = room;
+		const jsonData = {
+			name,
+			room_id,
+			reference,
+			createdBy
+		};
+		const response = await fetchRoute(
+			'sensor/create',
+			'POST',
+			jsonData,
+			userContext.token
+		);
+		console.log('response', response);
+	};
+
+	const pickerItems = rooms.map((r) => {
+		return { label: `${r.name}`, value: `${r.id}` };
+	});
 
 	return (
 		<View style={styles.container}>
@@ -25,30 +57,37 @@ export default function CreateSensor() {
 				<TextInput
 					style={[theme.input, styles.input]}
 					placeholder="Ex : Home"
+					onChangeText={setName}
+					value={name}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Piece</Text>
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
-					items={[
-						{ label: '-Salon-', value: 'Salon' },
-						{ label: '-Chambre-', value: 'Chambre' }
-					]}
+					items={pickerItems}
 					style={pickerSelectStyles}
 				/>
-				<TextInput style={styles.hidden} defaultValue={room} />
+				<TextInput
+					style={styles.hidden}
+					defaultValue={toString(room)}
+					value={room}
+				/>
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Référence</Text>
 				<TextInput
 					style={[theme.input, styles.input]}
 					placeholder="Référence"
+					onChangeText={setReference}
+					value={reference}
 				/>
 			</View>
 			<View style={styles.bottom}>
 				<TouchableOpacity style={[theme.btn, styles.btn]}>
-					<Text style={theme.btnText}>Créer le capteur</Text>
+					<Text style={theme.btnText} onPress={createSensor}>
+						Créer le capteur
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
