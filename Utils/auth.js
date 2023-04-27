@@ -1,6 +1,9 @@
-import {param} from "./config";
+import { param } from './config';
 
 const HOST = param.url;
+
+import * as SecureStore from 'expo-secure-store';
+
 const fetchWithTimeout = (resource, options, timeout = 5000) => {
 	return Promise.race([
 		fetch(resource, options),
@@ -10,18 +13,38 @@ const fetchWithTimeout = (resource, options, timeout = 5000) => {
 	]);
 };
 
-export default async function fetchRoute(route, method, params) {
+export async function fetchRoute(route, method, params, token = '') {
 	const url = new URL(route, HOST);
+	console.log('fetch ---', route, method, params, token);
+	const headers = {
+		Accept: 'application/json',
+		'Content-Type': 'application/json'
+	};
 
+	if (token) {
+		headers['Authorization'] = `Bearer ${token}`;
+	}
+
+	const body = params ? JSON.stringify(params) : null;
+
+	if (method === 'GET' || !body) {
+		delete headers['Content-Type'];
+		delete headers['Accept'];
+		body = null;
+	}
+
+	if (route === 'auth/login') {
+		delete headers['Authorization'];
+	}
+
+	const fetchOptions = {
+		method: method.toUpperCase(),
+		headers,
+		body
+	};
+	console.log('fetchoptions --- ', fetchOptions);
 	try {
-		const response = await fetchWithTimeout(url.toString(), {
-			method: `${method}`,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(params)
-		});
+		const response = await fetchWithTimeout(url.toString(), fetchOptions);
 
 		if (!response.ok) {
 			const errorMessage = await response.text();
@@ -31,9 +54,15 @@ export default async function fetchRoute(route, method, params) {
 			throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
 		}
 
-		return response.json();
+		const json = await response.json();
+
+		return json;
 	} catch (error) {
 		console.error('Error while fetching:', error);
 		throw error;
 	}
+}
+
+export async function fetchFromStorage(key) {
+	return await SecureStore.getItemAsync(key);
 }
