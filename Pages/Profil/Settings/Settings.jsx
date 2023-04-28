@@ -22,7 +22,7 @@ export default function Settings(){
     const setMode = userContext.setTheme
 
     const colorScheme = Appearance.getColorScheme();
-    console.log(colorScheme)
+    // console.log(colorScheme)
 
     const styles = StyleSheet.create({
         content : {

@@ -4,10 +4,11 @@ import {
 	View,
 	Image,
 	TextInput,
-	TouchableOpacity, ScrollView
+	TouchableOpacity,
+	ScrollView
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import Text from "../../Components/Text";
+import Text from '../../Components/Text';
 import { theme, color } from '../../assets/styles/style';
 import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
@@ -18,8 +19,7 @@ export default function Login({ navigation }) {
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
-	const mode = userContext.theme
-
+	const mode = userContext.theme;
 	const saveUserData = async (key, value) => {
 		await SecureStore.setItemAsync(key, value);
 	};
@@ -30,7 +30,6 @@ export default function Login({ navigation }) {
 				email,
 				password
 			});
-			 (jsonData);
 			if (jsonData.userId && jsonData.token) {
 				await saveUserData('userId', JSON.stringify(jsonData.userId));
 				await saveUserData('token', JSON.stringify(jsonData.token));
@@ -59,7 +58,7 @@ export default function Login({ navigation }) {
 	};
 
 	const styles = StyleSheet.create({
-		content : {
+		content: {
 			marginTop: 80
 		},
 		logo: {
@@ -127,7 +126,7 @@ export default function Login({ navigation }) {
 					value={email}
 					keyboardType="email-address"
 					placeholder="Adresse mail"
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 
 				<TextInput
@@ -136,7 +135,7 @@ export default function Login({ navigation }) {
 					value={password}
 					placeholder="Mot de passe"
 					secureTextEntry
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
 				{connected && <Text style={styles.success}>Connecté</Text>}

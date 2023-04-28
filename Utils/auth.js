@@ -55,7 +55,7 @@ export async function fetchRoute(route, method, params, token = '') {
 
 		return json;
 	} catch (error) {
-		console.error('Error while fetching:', error);
+		console.error('Error while fetching:', error.message);
 		throw error;
 	}
 }

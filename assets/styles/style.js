@@ -54,9 +54,9 @@ export const theme = {
             paddingLeft: 18,
             padding: 10,
             color: color.dark.text,
-            placeholder : {
-                color : color.dark.text
-            },
+            // placeholder : {
+            //     color : color.dark.text
+            // },
         },
         btn: {
             marginTop: 24,
@@ -121,9 +121,9 @@ export const theme = {
             elevation: 5,
             paddingLeft: 18,
             padding: 10,
-            placeholder : {
-                color : color.light.text
-            },
+            // placeholder : {
+            //     color : color.light.text
+            // },
         },
         btn: {
             marginTop: 24,

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { UserContext } from '../../../Context/UserContext';
-import Text from "../../../Components/Text";
+import Text from '../../../Components/Text';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 
@@ -20,7 +20,7 @@ export default function CreateSensor() {
 	const [rooms, setRooms] = useState([]);
 	const [reference, setReference] = useState('');
 	const userContext = useContext(UserContext);
-	const mode = userContext.theme
+	const mode = userContext.theme;
 
 	const getAllRooms = async () => {
 		// const tk = ;
@@ -47,7 +47,7 @@ export default function CreateSensor() {
 			jsonData,
 			userContext.token
 		);
-		console.log('response', response);
+		// console.log('response', response);
 	};
 
 	const pickerItems = rooms.map((r) => {
@@ -55,13 +55,13 @@ export default function CreateSensor() {
 	});
 
 	const styles = StyleSheet.create({
-		content : {
-			width: "90%",
-			alignSelf: "center"
+		content: {
+			width: '90%',
+			alignSelf: 'center'
 		},
 		input: {
 			width: '100%',
-			margin: 0,
+			margin: 0
 		},
 		inputGroup: {
 			alignItems: 'flex-start',
@@ -97,7 +97,7 @@ export default function CreateSensor() {
 				<TextInput
 					style={[theme[mode].input, styles.input]}
 					placeholder="Ex : Home"
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 					onChangeText={setName}
 					value={name}
 				/>
@@ -113,7 +113,7 @@ export default function CreateSensor() {
 					style={styles.hidden}
 					defaultValue={toString(room)}
 					value={room}
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
@@ -123,7 +123,7 @@ export default function CreateSensor() {
 					placeholder="Référence"
 					onChangeText={setReference}
 					value={reference}
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 			</View>
 			<View style={styles.bottom}>

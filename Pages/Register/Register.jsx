@@ -116,7 +116,7 @@ export default function Register({ data }) {
 								confirmed: 'Confirmer le mot de passe'
 							}[field]
 						}
-						placeholderTextColor={color[mode].text}
+						placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 						secureTextEntry={['password', 'confirmed'].includes(field)}
 					/>
 				))}
