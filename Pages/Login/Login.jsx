@@ -58,11 +58,9 @@ export default function Login({ navigation }) {
 		async () => {
 			const t = fetchFromStorage('token');
 			const uid = fetchFromStorage('userId');
-			console.log('out --- ', t, uid);
 			userContext.setUserId(uid);
 			userContext.setToken(t);
 		};
-		console.log('uc', userContext);
 		setConnected(false);
 		if (!userContext.token || !userContext.userId) {
 			console.log('ça part');

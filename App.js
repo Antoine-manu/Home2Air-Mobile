@@ -7,7 +7,7 @@ import {UserContext} from "./Context/UserContext";
 import {useState} from "react";
 
 export default function App() {
-    const [id, setID] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [token, setToken] = useState(null);
     const [isDark, setIsDark] = useState("dark");
     const containerTheme = {
@@ -23,8 +23,8 @@ export default function App() {
           >
               <UserContext.Provider
                 value={{
-                    id: id,
-                    setID : setID,
+                    userId: userId,
+                    setUserId : setUserId,
                     token : token,
                     setToken : setToken,
                     theme : isDark,
