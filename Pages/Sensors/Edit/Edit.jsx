@@ -1,18 +1,13 @@
 import { useState, useContext, useEffect } from 'react';
-import {
-	StyleSheet,
-	Text,
-	View,
-	TextInput,
-	TouchableOpacity,
-	Switch
-} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 import { UserContext } from '../../../Context/UserContext';
+import {StyleSheet, View, Image, TextInput, Button, TouchableOpacity, Switch, ScrollView} from 'react-native';
+import Text from "../../../Components/Text";
 
-export default function EditSensor({ route }) {
+export default function EditSensor({navigation, route}) {
+
 	const { id } = route.params;
 	const [name, setName] = useState('');
 	const [edited, setEdited] = useState('');
@@ -24,6 +19,84 @@ export default function EditSensor({ route }) {
 	const [isEnabled, setIsEnabled] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const userContext = useContext(UserContext);
+    const mode = userContext.theme
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    const styles =  StyleSheet.create({
+        content : {
+            width: "90%",
+            alignSelf: "center"
+        },
+        input : {
+            alignItems: "center",
+            borderRadius: 32,
+            margin: 0,
+            width:"80%",
+            textAlign: "right"
+        },
+        inputGroup : {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop : 20,
+            backgroundColor: color[mode].secondaryBackground,
+            padding: 12,
+            borderRadius: 8,
+
+        },
+        label: {
+            marginBottom: -10,
+            color: color[mode].text
+        },
+        switchGroup : {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop : 20
+        },
+        bottom : {
+            backgroundColor: color[mode].background,
+            zIndex: 10,
+            width: "100%",
+            height: "15%",
+            marginTop : "auto",
+            bottom: 0,
+            // position: "fixed",
+            alignItems: "center",
+            justifyContent: "flex-start"
+        },
+        btn : {
+            width: 250,
+            alignItems: "center",
+            backgroundColor: color[mode].red
+        },
+        hidden : {
+            display: "none"
+        },
+        title : {
+            fontSize: 16,
+            fontWeight: "bold",
+            alignSelf: "flex-start",
+            marginTop: 24
+        }
+    })
+
+    const selectStyle = {
+        inputIOS: {
+            placeholder : {
+                color : color[mode].text
+            },
+            color: color[mode].text
+        },
+        inputAndroid: {
+            placeholder : {
+                color : color[mode].text
+            },
+            color: color[mode].text
+        }
+    }
 
 	useEffect(() => {
 		findSensorData();
@@ -119,12 +192,12 @@ export default function EditSensor({ route }) {
 	});
 	console.log('select', select);
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<Text style={styles.title}>Informations</Text>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Nom</Text>
 				<TextInput
-					style={styles.input}
+					style={[styles.input, {color : color[mode].text}]}
 					placeholder="Ex : Home"
 					defaultValue={name}
 					onChangeText={(value) => {
@@ -141,7 +214,7 @@ export default function EditSensor({ route }) {
 						updateSensorData(); // call updateSensorData with the new value
 					}}
 					items={pickerItems}
-					style={pickerSelectStyles}
+					style={selectStyle}
 					value={select}
 				/>
 				<TextInput
@@ -155,7 +228,7 @@ export default function EditSensor({ route }) {
 
 			{/* <View style={styles.inputGroup}>
 				<Text style={styles.label}>Référence</Text>
-				<TextInput placeholder="Référence" defaultValue={reference} />
+				<TextInput placeholder="Référence" defaultValue={reference} style={{color : color[mode].text}}/>
 			</View> */}
 			<Text style={styles.title}>Paramètres généraux</Text>
 			{/* <View style={styles.inputGroup}>
@@ -183,7 +256,7 @@ export default function EditSensor({ route }) {
 						{ label: 'Celsius', value: 'Celsius' },
 						{ label: 'Fahrenheit', value: 'Fahrenheit' }
 					]}
-					style={pickerSelectStyles}
+					style={selectStyle}
 					value={params.temperature}
 				/>
 				<TextInput
@@ -198,80 +271,18 @@ export default function EditSensor({ route }) {
 			<View style={styles.switchGroup}>
 				<Text>Notifications du capteur</Text>
 				<Switch
-					trackColor={{ false: color.grey, true: color.blue }}
-					thumbColor={isEnabled ? color.light : color.light}
-					ios_backgroundColor="#3e3e3e"
+					trackColor={{false: color[mode].grey, true: color[mode].blue}}
+                    thumbColor={isEnabled ? color[mode].light : color[mode].light}
 					onValueChange={(setIsEnabled, updateSensorData())}
 					value={isEnabled}
 					defaultValue={isEnabled}
 				/>
 			</View>
 			<View style={styles.bottom}>
-				<TouchableOpacity style={[theme.btn, styles.btn]}>
-					<Text style={theme.btnText}>Supprimer</Text>
+				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
+					<Text style={theme[mode].btnText}>Supprimer</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
-
-const styles = StyleSheet.create({
-	input: {
-		alignItems: 'center',
-		borderRadius: 32,
-		margin: 0,
-		width: '80%',
-		textAlign: 'right'
-	},
-	inputGroup: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		width: '100%',
-		marginTop: 20,
-		backgroundColor: color.lightgrey,
-		padding: 12,
-		borderRadius: 8
-	},
-	switchGroup: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		width: '100%',
-		marginTop: 20
-	},
-	label: {
-		marginBottom: -10
-	},
-	container: {
-		width: '90%',
-		marginLeft: '5%',
-		alignItems: 'center',
-		flex: 1
-	},
-	bottom: {
-		backgroundColor: color.background,
-		zIndex: 10,
-		width: '100%',
-		height: '15%',
-		marginTop: 'auto',
-		bottom: 0,
-		// position: "fixed",
-		alignItems: 'center',
-		justifyContent: 'flex-start'
-	},
-	btn: {
-		width: 250,
-		alignItems: 'center',
-		backgroundColor: color.red
-	},
-	hidden: {
-		display: 'none'
-	},
-	title: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		alignSelf: 'flex-start',
-		marginTop: 24
-	}
-});

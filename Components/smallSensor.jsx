@@ -1,11 +1,15 @@
-import { Text, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { theme, color } from '../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import Text from './Text';
+import { UserContext } from '../Context/UserContext';
 
 export default function SmallSensor({ id, name }) {
-	// Add name and id props
 	const navigation = useNavigation();
+	const userContext = useContext(UserContext);
+	const mode = userContext.theme;
 
 	const styles = {
 		btnSmall: {
@@ -20,7 +24,7 @@ export default function SmallSensor({ id, name }) {
 			height: 110,
 			padding: 16,
 			borderRadius: 16,
-			backgroundColor: '#f7f7f7',
+			backgroundColor: color[mode].modalBg,
 			flexDirection: 'row',
 			justifyContent: 'space-between'
 		},
@@ -38,14 +42,15 @@ export default function SmallSensor({ id, name }) {
 				gear: {
 					width: '100%',
 					icon: {
-						alignSelf: 'flex-end'
+						alignSelf: 'flex-end',
+						color: color[mode].text
 					}
 				}
 			}
 		}
 	};
 	return (
-		<View style={[styles.smallSensor, theme.shadow]}>
+		<View style={[styles.smallSensor, theme[mode].shadow]}>
 			<View style={styles.smallSensorLayout.left}>
 				<Text style={styles.smallSensorLayout.left.textLayout}>{name}</Text>
 				{/* Use the name prop here */}
@@ -63,10 +68,10 @@ export default function SmallSensor({ id, name }) {
 					/>
 				</TouchableOpacity>
 				<TouchableOpacity
-					style={[theme.btn, styles.btnSmall]}
+					style={[theme[mode].btn, styles.btnSmall]}
 					onPress={() => navigation.navigate('Sensor', { id: id, name: name })}
 				>
-					<Text style={[theme.btnText, styles.btnSmallText]}>Voir</Text>
+					<Text style={[theme[mode].btnText, styles.btnSmallText]}>Voir</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

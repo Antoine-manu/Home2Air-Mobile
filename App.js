@@ -7,15 +7,15 @@ import {UserContext} from "./Context/UserContext";
 import {useState} from "react";
 
 export default function App() {
-    const containerTheme = {
-        colors: {
-            primary: color.primary,
-            background: color.background
-        },
-    };
     const [userId, setUserId] = useState(null);
     const [token, setToken] = useState(null);
-
+    const [isDark, setIsDark] = useState("dark");
+    const containerTheme = {
+        colors: {
+            primary: color[isDark].primary,
+            background: color[isDark].background
+        },
+    };
   return (
       <>
           <NavigationContainer
@@ -24,9 +24,11 @@ export default function App() {
               <UserContext.Provider
                 value={{
                     userId: userId,
-                    setUserId: setUserId,
+                    setUserId : setUserId,
                     token : token,
-                    setToken : setToken
+                    setToken : setToken,
+                    theme : isDark,
+                    setTheme : setIsDark
                 }}
               >
                 <Navigation/>
@@ -35,12 +37,3 @@ export default function App() {
       </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

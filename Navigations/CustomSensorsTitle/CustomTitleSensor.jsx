@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from "@react-navigation/native";
+import Text from "../../Components/Text";
 import {FontAwesome} from "@expo/vector-icons";
 export default function CustomTitleSensor({props}){
     const route = useRoute();
