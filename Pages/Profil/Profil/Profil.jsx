@@ -33,7 +33,7 @@ export default function Profil(){
         },
         formGroup : {
             flexDirection: "row",
-            alignItems: "flex-center",
+            alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
             marginTop : 20,
