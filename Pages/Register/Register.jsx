@@ -5,10 +5,10 @@ import {
 	TextInput,
 	TouchableOpacity, ScrollView
 } from 'react-native';
+import Text from "../../Components/Text";
 import { theme, color } from '../../assets/styles/style';
 import fetchRoute from '../../Utils/auth';
 import {UserContext} from "../../Context/UserContext";
-import Text from "../../Components/Text";
 
 export default function Register({ data }) {
 	const [form, setForm] = useState({

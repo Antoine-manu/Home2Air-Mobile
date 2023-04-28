@@ -88,7 +88,9 @@ export default function Home() {
 			<View style={styles.header.container}>
 				<Text style={styles.header.title}>-Space-</Text>
 				<View style={styles.header.right.layout}>
-					<FontAwesome5 name="bell" size={24} color={color[mode].primary} />
+					<TouchableOpacity>
+						<FontAwesome5 name="bell" size={24} color={color[mode].primary} onPress={() => navigation.navigate('Notifications')}/>
+					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={() => navigation.navigate('Profil')}
 					>
