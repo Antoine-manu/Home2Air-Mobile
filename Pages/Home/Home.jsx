@@ -12,8 +12,38 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import SmallSensor from '../../Components/smallSensor';
+import { UserContext } from '../../Context/UserContext';
+import { useState, useContext } from 'react';
+import { fetchRoute } from '../../Utils/auth';
 export default function Home() {
 	const navigation = useNavigation();
+
+	const [sensors, setSensors] = useState([]);
+	const [search, setSearch] = useState('');
+	const [searchResults, setSearchResults] = useState(null); // Add a state variable for search results
+	const userContext = useContext(UserContext);
+
+	const searchSensors = async (name) => {
+		console.log(name);
+		const response = await fetchRoute(
+			'sensor/find-by',
+			'post',
+			{ name },
+			userContext.token
+		);
+		console.log(response);
+		setSearchResults(response); // Store the search results in state
+	};
+
+	// Define a function to render a SmallSensor component for each sensor in the search results
+	const renderSearchResults = () => {
+		if (searchResults) {
+			return searchResults.map((sensor) => (
+				<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
+			));
+		}
+		return null;
+	};
 
 	return (
 		<View style={styles.container}>
@@ -30,11 +60,25 @@ export default function Home() {
 			<TextInput
 				style={[theme.input, styles.input]}
 				placeholder="Chercher un capteur"
+				onChangeText={(text) => {
+					setSearch(text);
+					searchSensors(text);
+				}}
+				value={search}
 			/>
 			<View style={styles.sensors}>
 				<Text style={styles.sensors.title}>-Room-</Text>
-				<Text style={styles.sensors.underText}>-X- capteurs</Text>
-				<SmallSensor />
+				<Text style={styles.sensors.underText}>
+					-{searchResults ? searchResults.length : sensors.length}- capteurs
+				</Text>
+				{searchResults? renderSearchResults() : ''}
+					{/* // : searchResults.map(
+					// 		(sensor) => (
+								
+					// 			(<SmallSensor id={sensor.id} name={sensor.name} />)
+					// 		)
+					//   )
+					//   } */}
 			</View>
 			<View style={styles.bottom}>
 				<TouchableOpacity
@@ -47,6 +91,7 @@ export default function Home() {
 		</View>
 	);
 }
+
 const styles = StyleSheet.create({
 	container: {
 		marginTop: 50,

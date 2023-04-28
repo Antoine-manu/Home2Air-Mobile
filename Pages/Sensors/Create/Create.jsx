@@ -1,3 +1,4 @@
+import { useState, useEffect, useContext } from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -6,10 +7,9 @@ import {
 	TouchableOpacity
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { UserContext } from '../../../Context/UserContext';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
-import { useState, useEffect, useContext } from 'react';
 import { fetchRoute } from '../../../Utils/auth';
+import { UserContext } from '../../../Context/UserContext';
 
 export default function CreateSensor() {
 	const [name, setName] = useState('');

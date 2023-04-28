@@ -1,6 +1,6 @@
-import { param } from './config';
+// import { param } from './config';
 
-const HOST = param.url;
+const HOST = 'http://192.168.1.237:6500/api/v1/';
 
 import * as SecureStore from 'expo-secure-store';
 
@@ -15,7 +15,6 @@ const fetchWithTimeout = (resource, options, timeout = 5000) => {
 
 export async function fetchRoute(route, method, params, token = '') {
 	const url = new URL(route, HOST);
-	console.log('fetch ---', route, method, params, token);
 	const headers = {
 		Accept: 'application/json',
 		'Content-Type': 'application/json'
@@ -42,10 +41,8 @@ export async function fetchRoute(route, method, params, token = '') {
 		headers,
 		body
 	};
-	console.log('fetchoptions --- ', fetchOptions);
 	try {
 		const response = await fetchWithTimeout(url.toString(), fetchOptions);
-
 		if (!response.ok) {
 			const errorMessage = await response.text();
 			console.error(

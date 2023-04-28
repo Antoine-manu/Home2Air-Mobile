@@ -43,7 +43,7 @@ export default function Sensor(){
                     color :color.primary
                 },
                 text : {
-                    font : 16,
+                    fontSize : 16,
                     marginStart: 6,
                     fontWeight: "bold",
                     color :color.primary
