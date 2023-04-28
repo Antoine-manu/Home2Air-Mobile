@@ -5,6 +5,7 @@ import Home from "../Pages/Home";
 import CreateSensor from "../Pages/Sensors/Create";
 import EditSensor from "../Pages/Sensors/Edit";
 import EditProfil from "../Pages/Profil/Edit";
+import Notifications from "../Pages/Notifications";
 import Sensor from "../Pages/Sensors/Single";
 import {UserContext} from "../Context/UserContext";
 import CustomGearSensor from "./CustomSensorsTitle/CustomGearSensor";
@@ -134,6 +135,19 @@ export default function LoginNavigation() {
 							color: color[mode].text
 						},
 						title: "Paramètres",
+					}}
+				/>
+				<Stack.Screen
+					name="Notifications"
+					component={Notifications}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Notifications",
 					}}
 				/>
 			</Stack.Group>

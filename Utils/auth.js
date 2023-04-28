@@ -3,6 +3,7 @@
 const HOST = 'http://192.168.1.237:6500/api/v1/';
 
 import * as SecureStore from 'expo-secure-store';
+import createAlert from "./alert";
 
 const fetchWithTimeout = (resource, options, timeout = 5000) => {
 	return Promise.race([
@@ -48,10 +49,13 @@ export async function fetchRoute(route, method, params, token = '') {
 			console.error(
 				`HTTP error: ${response.status} ${response.statusText}, Message: ${errorMessage}`
 			);
+			if(response.status == 401){
+				throw new Error("Les identifiants saisies sont invalides");
+			}
 			throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
 		}
-
 		const json = await response.json();
+		console.log(response.json())
 
 		return json;
 	} catch (error) {

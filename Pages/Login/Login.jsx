@@ -82,7 +82,8 @@ export default function Login({ navigation }) {
 			padding: 10
 		},
 		inputBox: {
-			marginTop: 26
+			marginTop: 26,
+			alignItems: "center"
 		},
 		btn: {
 			marginTop: 24,

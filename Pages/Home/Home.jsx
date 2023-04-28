@@ -5,7 +5,7 @@ import {
 	TextInput,
 	Button,
 	ScrollView,
-	TouchableOpacity
+	TouchableOpacity, Alert
 } from 'react-native';
 import { theme, color } from '../../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
@@ -152,13 +152,23 @@ export default function Home() {
 		return null;
 	};
 
+
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<View style={styles.header.container}>
 				<Text style={styles.header.title}>-Space-</Text>
 				<View style={styles.header.right.layout}>
+<<<<<<< HEAD
 					<FontAwesome5 name="bell" size={24} color={color[mode].primary} />
 					<TouchableOpacity onPress={() => navigation.navigate('Profil')}>
+=======
+					<TouchableOpacity>
+						<FontAwesome5 name="bell" size={24} color={color[mode].primary} onPress={() => navigation.navigate('Notifications')}/>
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => navigation.navigate('Profil')}
+					>
+>>>>>>> 79c4fbc7fc997777b8617c74f20915be5c190878
 						<Image
 							style={styles.header.right.pp}
 							source={require('../../assets/pp.jpeg')}
