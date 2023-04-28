@@ -5,7 +5,7 @@ import {
 	TextInput,
 	Button,
 	ScrollView,
-	TouchableOpacity
+	TouchableOpacity, Alert
 } from 'react-native';
 import { theme, color } from '../../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
@@ -81,6 +81,7 @@ export default function Home() {
 			alignItems: 'center'
 		}
 	});
+
 
 
 	return (
