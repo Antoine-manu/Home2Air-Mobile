@@ -12,7 +12,7 @@ export default function CustomText({children, style}){
     }
 
     const styleArray = style ? [styleText, style] :  styleText
-    console.log(styleArray)
+    // console.log(styleArray)
 
     return(
             <Text style={styleArray}>

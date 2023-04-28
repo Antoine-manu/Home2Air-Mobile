@@ -10,18 +10,24 @@ import {
 import { theme, color } from '../../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Text from "../../Components/Text";
+import Text from '../../Components/Text';
 import { FontAwesome5 } from '@expo/vector-icons';
 import SmallSensor from '../../Components/smallSensor';
-import {UserContext} from "../../Context/UserContext";
-import {useContext} from "react";
+import { UserContext } from '../../Context/UserContext';
+import { useState, useContext, useEffect } from 'react';
+import { fetchRoute } from '../../Utils/auth';
 export default function Home() {
 	const navigation = useNavigation();
 	const userContext = useContext(UserContext);
-	const mode = userContext.theme
+	const mode = userContext.theme;
+	const [place, setPlace] = useState([]);
+	const [rooms, setRooms] = useState([]);
+	const [sensors, setSensors] = useState([]);
+	const [search, setSearch] = useState('');
+	const [searchResults, setSearchResults] = useState(null); // Add a state variable for search results
 
 	const styles = StyleSheet.create({
-		content : {
+		content: {
 			marginTop: 48
 		},
 		header: {
@@ -82,6 +88,69 @@ export default function Home() {
 		}
 	});
 
+	useEffect(() => {
+		async function fetchData() {
+			setPlace(await renderSensorList());
+		}
+		fetchData();
+		console.log(place);
+	}, []);
+
+	const renderSensorList = async () => {
+		console.log(
+			JSON.stringify(
+				await fetchRoute(
+					'place/find-room-and-sensor',
+					'post',
+					{
+						user_id: userContext.userId
+					},
+					userContext.token
+				),
+				null,
+				2
+			)
+		);
+		return await fetchRoute(
+			'place/find-room-and-sensor',
+			'post',
+			{
+				user_id: userContext.userId
+			},
+			userContext.token
+		);
+	};
+
+	const searchSensors = async (search) => {
+		if (search.length > 0) {
+			const response = await fetchRoute(
+				'sensor/find-by',
+				'post',
+				{ name: search },
+				userContext.token
+			);
+			if (response) {
+				setSearchResults(response); // Store the search results in state
+			}
+		}
+	};
+
+	// Define a function to render a SmallSensor component for each sensor in the search results
+	const renderSearchResults = () => {
+		if (searchResults) {
+			console.log(
+				searchResults.map((sensor) => ({
+					id: sensor.id,
+					name: sensor.name,
+					randomInt: Math.floor(Math.random() * 100) + 1
+				}))
+			);
+			return searchResults.map((sensor) => (
+				<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
+			));
+		}
+		return null;
+	};
 
 
 	return (
@@ -105,12 +174,39 @@ export default function Home() {
 			<TextInput
 				style={[theme[mode].input, styles.input]}
 				placeholder="Chercher un capteur"
-				placeholderTextColor= {color[mode].textSecondary}
+				onChangeText={(text) => {
+					searchSensors(text);
+				}}
+				placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 			/>
 			<View style={styles.sensors}>
-				<Text style={styles.sensors.title}>-Room-</Text>
-				<Text style={styles.sensors.underText}>-X- capteurs</Text>
-				<SmallSensor />
+				{searchResults
+					? renderSearchResults()
+					: place.map((place) => (
+							<View key={place.id}>
+								<Text style={styles.sensors.title}>{place.name}</Text>
+								<Text style={styles.sensors.underText}>
+									-
+									{place.Room.reduce(
+										(sum, room) => sum + room.Sensor.length,
+										0
+									)}
+									- capteurs
+								</Text>
+								{place.Room.map((room) => (
+									<View key={room.id}>
+										<Text>{room.name}</Text>
+										{room.Sensor.map((sensor) => (
+											<SmallSensor
+												key={sensor.id}
+												id={sensor.id}
+												name={sensor.name}
+											/>
+										))}
+									</View>
+								))}
+							</View>
+					  ))}
 			</View>
 			<View style={styles.bottom}>
 				<TouchableOpacity

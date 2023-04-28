@@ -54,9 +54,9 @@ export const theme = {
             paddingLeft: 18,
             padding: 10,
             color: color.dark.text,
-            placeholder : {
-                color : color.dark.text
-            },
+            // placeholder : {
+            //     color : color.dark.text
+            // },
         },
         btn: {
             marginTop: 24,
@@ -80,7 +80,7 @@ export const theme = {
         },
         inputGroup : {
             flexDirection: "row",
-            alignItems: "flex-center",
+            alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
             marginTop : 20,
@@ -101,7 +101,7 @@ export const theme = {
         },
         inputGroupDisable : {
             flexDirection: "row",
-            alignItems: "flex-center",
+            alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
             marginTop: 20,
@@ -121,9 +121,9 @@ export const theme = {
             elevation: 5,
             paddingLeft: 18,
             padding: 10,
-            placeholder : {
-                color : color.light.text
-            },
+            // placeholder : {
+            //     color : color.light.text
+            // },
         },
         btn: {
             marginTop: 24,
@@ -153,7 +153,7 @@ export const theme = {
         },
         inputGroup : {
             flexDirection: "row",
-            alignItems: "flex-center",
+            alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
             marginTop : 20,
@@ -173,7 +173,7 @@ export const theme = {
         },
         inputGroupDisable : {
             flexDirection: "row",
-            alignItems: "flex-center",
+            alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
             marginTop: 20,

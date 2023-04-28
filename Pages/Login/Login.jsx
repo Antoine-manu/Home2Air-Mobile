@@ -4,10 +4,11 @@ import {
 	View,
 	Image,
 	TextInput,
-	TouchableOpacity, ScrollView
+	TouchableOpacity,
+	ScrollView
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import Text from "../../Components/Text";
+import Text from '../../Components/Text';
 import { theme, color } from '../../assets/styles/style';
 import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
@@ -18,8 +19,7 @@ export default function Login({ navigation }) {
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
-	const mode = userContext.theme
-
+	const mode = userContext.theme;
 	const saveUserData = async (key, value) => {
 		await SecureStore.setItemAsync(key, value);
 	};
@@ -30,21 +30,11 @@ export default function Login({ navigation }) {
 				email,
 				password
 			});
-
-			let userId, token;
-			try {
-				userId = jsonData.userId;
-				token = jsonData.token;
-			} catch (err) {
-				console.error('Error parsing JSON:', err);
-			}
-
-			if (userId && token) {
-				await saveUserData('userId', JSON.stringify(userId));
-				await saveUserData('token', JSON.stringify(token));
-				userContext.setUserId(userId);
-				userContext.setToken(token);
-				console.log('uc final', userContext);
+			if (jsonData.userId && jsonData.token) {
+				await saveUserData('userId', JSON.stringify(jsonData.userId));
+				await saveUserData('token', JSON.stringify(jsonData.token));
+				userContext.setUserId(jsonData.userId);
+				userContext.setToken(jsonData.token);
 				setConnected(true);
 			}
 		} catch (error) {
@@ -63,13 +53,12 @@ export default function Login({ navigation }) {
 		};
 		setConnected(false);
 		if (!userContext.token || !userContext.userId) {
-			console.log('ça part');
 			loginUser();
 		} // modify this line to remove email and password argument
 	};
 
 	const styles = StyleSheet.create({
-		content : {
+		content: {
 			marginTop: 80
 		},
 		logo: {
@@ -138,7 +127,7 @@ export default function Login({ navigation }) {
 					value={email}
 					keyboardType="email-address"
 					placeholder="Adresse mail"
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 
 				<TextInput
@@ -147,16 +136,14 @@ export default function Login({ navigation }) {
 					value={password}
 					placeholder="Mot de passe"
 					secureTextEntry
-					placeholderTextColor={color[mode].text}
+					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
 				{connected && <Text style={styles.success}>Connecté</Text>}
 			</View>
 
 			<TouchableOpacity style={styles.btn} onPress={handleLogin}>
-				<Text style={styles.btnText} >
-					Se connecter
-				</Text>
+				<Text style={styles.btnText}>Se connecter</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.forgetpassword}>

@@ -12,7 +12,7 @@ export default function Sensor(){
     const userContext = useContext(UserContext);
     const mode = userContext.theme
     const Dimensions = useWindowDimensions();
-    console.log(Dimensions)
+    // console.log(Dimensions)
 
     const styles = StyleSheet.create({
         content : {
