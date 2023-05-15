@@ -8,7 +8,7 @@ import {
 	ScrollView,
 	TouchableOpacity
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from '@react-native-picker/picker';
 import { UserContext } from '../../../Context/UserContext';
 import Text from '../../../Components/Text';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
@@ -103,7 +103,7 @@ export default function CreateSensor() {
 				/>
 			</View>
 			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Piece</Text>
+				<Text style={styles.label}>Pièce</Text>
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
 					items={pickerItems}

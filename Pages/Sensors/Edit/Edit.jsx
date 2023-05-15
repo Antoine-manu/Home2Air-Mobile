@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from '@react-native-picker-select';
+import RNPickerSelect from '@react-native-picker/picker';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 import { UserContext } from '../../../Context/UserContext';
@@ -198,7 +199,6 @@ export default function EditSensor({ navigation, route }) {
 	const pickerItems = rooms.map((r) => {
 		return { label: `${r.name}`, value: `${r.id}` };
 	});
-	console.log('select', select);
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<Text style={styles.title}>Informations</Text>
@@ -216,21 +216,21 @@ export default function EditSensor({ navigation, route }) {
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Pièce</Text>
-				{/* <RNPickerSelect
+				<RNPickerSelect
 					onValueChange={(value) => {
 						setSelect(value);
 						updateSensorData();
 					}}
+					useNativeAndroidPickerStyle={false}
 					items={pickerItems}
 					style={pickerSelectStyles[mode]}
-					value={select}
-				/> */}
+				/>
 				<TextInput
 					style={styles.hidden}
-					defaultValue={room.name}
-					value={room.name}
+					defaultValue={toString(room)}
+					value={toString(room)}
 				/>
-			<TextInput style={styles.hidden} defaultValue={room} />
+				<TextInput style={styles.hidden} defaultValue={room} />
 			</View>
 
 			<Text style={styles.title}>Paramètres généraux</Text>
