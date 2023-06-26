@@ -7,7 +7,7 @@ import {Picker} from '@react-native-picker/picker';
 import {FontAwesome5} from "@expo/vector-icons";
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-export default function CreateNotification(){
+export default function Single(){
 
     const userContext = useContext(UserContext);
     const [selectedLanguage, setSelectedLanguage] = useState();
@@ -90,16 +90,16 @@ export default function CreateNotification(){
 
     return (
         <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
-            <View style={theme[mode].inputGroup}>
+            <View style={theme[mode].inputGroupDisable}>
                 <Text style={theme[mode].inputGroup.label}>Titre</Text>
-                <TextInput style={theme[mode].inputGroup.input} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez le titre de la notification"}/>
+                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez le titre de la notification"}/>
             </View>
-            <View style={theme[mode].inputGroup}>
+            <View style={theme[mode].inputGroupDisable}>
                 <Text style={theme[mode].inputGroup.label}>Donnée</Text>
-                <TextInput style={theme[mode].inputGroup.input} placeholderTextColor={color[mode].textSecondary} placeholder={"Sélectionnez une donnée"}/>
+                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Sélectionnez une donnée"}/>
                 {/*Select here*/}
             </View>
-            <View style={theme[mode].inputGroup}>
+            <View style={theme[mode].inputGroupDisable}>
                 <Text style={styles.radioLayout.text}>Echelle</Text>
                 <View style={styles.radioLayout.radio}>
                     <TouchableOpacity style={[styles.radio]}>
@@ -113,22 +113,14 @@ export default function CreateNotification(){
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={[theme[mode].inputGroup, styles.area.layout]}>
+            <View style={[theme[mode].inputGroupDisable, styles.area.layout]}>
                 <Text style={theme[mode].inputGroup.label}>Message</Text>
-                <TextInput numberOfLines={20} multiline={true} style={[ styles.area]} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez la description de la notification"}/>
+                <TextInput numberOfLines={20} multiline={true} style={[ styles.area]} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez la description de la notification"}/>
             </View>
-            <View style={theme[mode].inputGroup}>
+            <View style={theme[mode].inputGroupDisable}>
                 <Text style={theme[mode].inputGroup.label}>Icon</Text>
-                <TextInput style={theme[mode].inputGroup.input} placeholderTextColor={color[mode].textSecondary} placeholder={"Icon"}/>
+                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Icon"}/>
                 {/*Select here*/}
-            </View>
-
-            <View style={styles.bottom}>
-                <TouchableOpacity style={[theme[mode].btn, styles.btn]}>
-                    <Text style={theme[mode].btnText}>
-                        Créer la notification
-                    </Text>
-                </TouchableOpacity>
             </View>
         </ScrollView>
     )

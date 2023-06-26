@@ -7,7 +7,7 @@ import {Picker} from '@react-native-picker/picker';
 import {FontAwesome5} from "@expo/vector-icons";
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-export default function CreateNotification(){
+export default function EditNotification(){
 
     const userContext = useContext(UserContext);
     const [selectedLanguage, setSelectedLanguage] = useState();

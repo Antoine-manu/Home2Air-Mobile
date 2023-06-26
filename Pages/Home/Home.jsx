@@ -11,7 +11,7 @@ import { theme, color } from '../../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Text from '../../Components/Text';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Octicons } from '@expo/vector-icons';
 import SmallSensor from '../../Components/smallSensor';
 import { UserContext } from '../../Context/UserContext';
 import { useState, useContext, useEffect } from 'react';
@@ -159,7 +159,7 @@ export default function Home() {
 				<Text style={styles.header.title}>-Space-</Text>
 				<View style={styles.header.right.layout}>
 					<TouchableOpacity>
-						<FontAwesome5 name="bell" size={24} color={color[mode].primary} onPress={() => navigation.navigate('Notifications')}/>
+						<Octicons name="bell-fill" size={24} color={color[mode].text} onPress={() => navigation.navigate('Notifications')}/>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={() => navigation.navigate('Profil')}

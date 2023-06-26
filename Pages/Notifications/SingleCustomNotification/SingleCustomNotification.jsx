@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {Feather, FontAwesome} from "@expo/vector-icons";
+import {Feather, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import {
     StyleSheet,
     View,
@@ -12,7 +12,7 @@ import Text from '../../../Components/Text';
 import {color, theme} from "../../../assets/styles/style";
 import {UserContext} from "../../../Context/UserContext";
 
-export default function SingleNotification(datas){
+export default function SingleCustomNotification(datas){
 
     const userContext = useContext(UserContext);
     const mode = userContext.theme;
@@ -42,8 +42,7 @@ export default function SingleNotification(datas){
     return (
         <View style={[styles.notif, theme[mode].shadow]}>
             <FontAwesome name={datas.datas.icon} size={20} color={color[mode][colorNotif]}/>
-            <Text style={styles.notif.text}> {datas.datas.text} </Text>
-            <FontAwesome name={"close"} size={20} color={color[mode].textSecondary}/>
+            <Text style={styles.notif.text}> {datas.datas.title} </Text>
         </View>
     )
 }

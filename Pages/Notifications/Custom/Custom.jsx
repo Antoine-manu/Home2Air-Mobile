@@ -2,9 +2,10 @@ import Text from "../../../Components/Text";
 import {color, theme} from "../../../assets/styles/style";
 import {UserContext} from "../../../Context/UserContext";
 import { useIsFocused } from '@react-navigation/native';
-import {TouchableOpacity} from "react-native";
+import {ScrollView, TouchableOpacity} from "react-native";
 import {useContext, useEffect, useCallback} from "react";
 import {useNavigation} from "@react-navigation/native";
+import SingleCustomNotification from "../SingleCustomNotification";
 
 export default function Custom(){
 
@@ -14,6 +15,14 @@ export default function Custom(){
 
     const isFocused = useIsFocused();
     const { isNotif, setIsNotif } = useContext(UserContext);
+
+    const notifData = {
+        id : 5,
+        title : "Qualité air chambre",
+        color : "green",
+        icon : "check-circle",
+        isPassed : true
+    }
 
     useEffect(() => {
         if (isFocused) {
@@ -28,8 +37,10 @@ export default function Custom(){
     }, [isFocused]);
 
     return (
-        <>
-
-        </>
+        <ScrollView contentContainerStyle={[theme[mode].container]}>
+           <TouchableOpacity onPress={() => navigation.navigate('SingleNotification')}>
+               <SingleCustomNotification datas={notifData}/>
+           </TouchableOpacity>
+        </ScrollView>
     )
 }
