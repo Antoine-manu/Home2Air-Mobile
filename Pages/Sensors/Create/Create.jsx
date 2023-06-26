@@ -47,7 +47,6 @@ export default function CreateSensor() {
 			jsonData,
 			userContext.token
 		);
-		// console.log('response', response);
 	};
 
 	const pickerItems = rooms.map((r) => {

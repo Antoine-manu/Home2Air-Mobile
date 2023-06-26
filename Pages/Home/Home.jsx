@@ -5,7 +5,8 @@ import {
 	TextInput,
 	Button,
 	ScrollView,
-	TouchableOpacity, Alert
+	TouchableOpacity,
+	Alert
 } from 'react-native';
 import { theme, color } from '../../assets/styles/style';
 import { useNavigation } from '@react-navigation/native';
@@ -90,27 +91,16 @@ export default function Home() {
 
 	useEffect(() => {
 		async function fetchData() {
-			setPlace(await renderSensorList());
+			try {
+				setPlace(await renderSensorList());
+			} catch (err) {
+				throw new Error(err.toString);
+			}
 		}
 		fetchData();
-		console.log(place);
 	}, []);
 
 	const renderSensorList = async () => {
-		console.log(
-			JSON.stringify(
-				await fetchRoute(
-					'place/find-room-and-sensor',
-					'post',
-					{
-						user_id: userContext.userId
-					},
-					userContext.token
-				),
-				null,
-				2
-			)
-		);
 		return await fetchRoute(
 			'place/find-room-and-sensor',
 			'post',
@@ -123,35 +113,35 @@ export default function Home() {
 
 	const searchSensors = async (search) => {
 		if (search.length > 0) {
-			const response = await fetchRoute(
-				'sensor/find-by',
-				'post',
-				{ name: search },
-				userContext.token
-			);
-			if (response) {
-				setSearchResults(response); // Store the search results in state
+			try {
+				const response = await fetchRoute(
+					'sensor/find-by',
+					'post',
+					{ name: search },
+					userContext.token
+				);
+				if (response) {
+					setSearchResults(response); // Store the search results in state
+				}
+			} catch (err) {
+				throw new Error(err.toString);
 			}
 		}
 	};
 
 	// Define a function to render a SmallSensor component for each sensor in the search results
-	const renderSearchResults = () => {
-		if (searchResults) {
-			console.log(
-				searchResults.map((sensor) => ({
-					id: sensor.id,
-					name: sensor.name,
-					randomInt: Math.floor(Math.random() * 100) + 1
-				}))
-			);
-			return searchResults.map((sensor) => (
-				<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
-			));
-		}
-		return null;
-	};
 
+	useEffect(() => {
+		const renderSearchResults = () => {
+			if (searchResults) {
+				return searchResults.map((sensor) => (
+					<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
+				));
+			}
+			return null;
+		};
+		renderSearchResults();
+	}, [searchResults]);
 
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
@@ -159,11 +149,14 @@ export default function Home() {
 				<Text style={styles.header.title}>-Space-</Text>
 				<View style={styles.header.right.layout}>
 					<TouchableOpacity>
-						<FontAwesome5 name="bell" size={24} color={color[mode].primary} onPress={() => navigation.navigate('Notifications')}/>
+						<FontAwesome5
+							name="bell"
+							size={24}
+							color={color[mode].primary}
+							onPress={() => navigation.navigate('Notifications')}
+						/>
 					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={() => navigation.navigate('Profil')}
-					>
+					<TouchableOpacity onPress={() => navigation.navigate('Profil')}>
 						<Image
 							style={styles.header.right.pp}
 							source={require('../../assets/pp.jpeg')}
@@ -181,7 +174,9 @@ export default function Home() {
 			/>
 			<View style={styles.sensors}>
 				{searchResults
-					? renderSearchResults()
+					? searchResults.map((sensor) => (
+							<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
+					  ))
 					: place.map((place) => (
 							<View key={place.id}>
 								<Text style={styles.sensors.title}>{place.name}</Text>

@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-// import RNPickerSelect from '@react-native-picker-select';
-import RNPickerSelect from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 import { UserContext } from '../../../Context/UserContext';
@@ -15,6 +14,7 @@ import {
 	ScrollView
 } from 'react-native';
 import Text from '../../../Components/Text';
+import Select from '../../../Components/Select';
 
 export default function EditSensor({ navigation, route }) {
 	const { id } = route.params;
@@ -30,7 +30,6 @@ export default function EditSensor({ navigation, route }) {
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
 	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
 	const styles = StyleSheet.create({
 		content: {
 			width: '90%',
@@ -136,10 +135,9 @@ export default function EditSensor({ navigation, route }) {
 			if (response) {
 				const parameters = JSON.parse(response.parameters);
 				const r = await findMonitoredRoom(response.room_id);
-				console.log('r', r);
 				setName(response.name);
 				setRoom(r);
-				setSelect(r.id);
+				setSelect(r);
 				setParams(parameters);
 				setTemperature(parameters.temperature);
 				setIsEnabled(parameters.notifications);
@@ -155,28 +153,15 @@ export default function EditSensor({ navigation, route }) {
 		const parameters = {
 			notifications: isEnabled,
 			advanced: '',
-			temperature: temperature
+			temperature: temperature,
+			notifications: isEnabled
 		};
-		console.log(
-			'params',
-			`sensor/update/${id}`,
-			'post',
-			{
-				name: name,
-				room_id: Number(select),
-				createdBy: userContext.userId,
-				parameters: JSON.stringify(parameters),
-				updatedAt: getCurrentDate(),
-				active: true
-			},
-			userContext.token
-		);
 		const response = await fetchRoute(
 			`sensor/update/${id}`,
 			'post',
 			{
 				name: name,
-				room_id: Number(select),
+				room_id: Number(select.value),
 				createdBy: userContext.userId,
 				parameters: JSON.stringify(parameters),
 				updatedAt: getCurrentDate(),
@@ -184,6 +169,7 @@ export default function EditSensor({ navigation, route }) {
 			},
 			userContext.token
 		);
+		console.log(response);
 	};
 
 	const findMonitoredRoom = async (id) => {
@@ -215,36 +201,32 @@ export default function EditSensor({ navigation, route }) {
 				/>
 			</View>
 			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Pièce</Text>
-				<RNPickerSelect
-					onValueChange={(value) => {
+				<Text style={styles.title}>{select ? select.name : room.name}</Text>
+				<Select
+					label="Sélectionnez une option"
+					data={pickerItems}
+					onSelect={(value) => {
 						setSelect(value);
 						updateSensorData();
 					}}
-					useNativeAndroidPickerStyle={false}
-					items={pickerItems}
+					defaultValue={room.name}
 					style={pickerSelectStyles[mode]}
 				/>
-				<TextInput
-					style={styles.hidden}
-					defaultValue={toString(room)}
-					value={toString(room)}
-				/>
-				<TextInput style={styles.hidden} defaultValue={room} />
 			</View>
 
 			<Text style={styles.title}>Paramètres généraux</Text>
 			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Temperature</Text>
-				{/* <RNPickerSelect
-					value={temperature}
-					onValueChange={(value) => setTemperature(value)}
-					style={selectStyle}
-					items={[
+				<Text style={styles.title}>
+					{temperature ? temperature.label : temperature.value}
+				</Text>
+				<Select
+					label="Select Temperature"
+					data={[
 						{ label: 'Celsius', value: 'Celsius' },
 						{ label: 'Fahrenheit', value: 'Fahrenheit' }
 					]}
-				/> */}
+					onSelect={setTemperature}
+				/>
 			</View>
 			<Text style={styles.title}>Notifications</Text>
 			<View style={styles.switchGroup}>
@@ -252,7 +234,10 @@ export default function EditSensor({ navigation, route }) {
 				<Switch
 					trackColor={{ false: color[mode].grey, true: color[mode].blue }}
 					thumbColor={isEnabled ? color[mode].light : color[mode].light}
-					onValueChange={toggleSwitch}
+					onValueChange={() => {
+						toggleSwitch();
+						updateSensorData();
+					}}
 					value={isEnabled}
 				/>
 			</View>
