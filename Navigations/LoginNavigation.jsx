@@ -6,10 +6,14 @@ import CreateSensor from "../Pages/Sensors/Create";
 import EditSensor from "../Pages/Sensors/Edit";
 import EditProfil from "../Pages/Profil/Edit";
 import Notifications from "../Pages/Notifications";
+import CreateNotification from "../Pages/Notifications/Custom/Create";
+import EditNotification from "../Pages/Notifications/Custom/Edit";
+import SingleNotification from "../Pages/Notifications/Custom/Single";
 import Sensor from "../Pages/Sensors/Single";
 import {UserContext} from "../Context/UserContext";
 import CustomGearSensor from "./CustomSensorsTitle/CustomGearSensor";
 import CustomGearProfil from "./CustomSensorsTitle/CustomGearProfil";
+import CustomSingleNotif from "./CustomSensorsTitle/CustomSingleNotif";
 import CustomTitleSensor from "./CustomSensorsTitle/CustomTitleSensor";
 import Profil from "../Pages/Profil/Profil";
 import Settings from "../Pages/Profil/Settings";
@@ -148,6 +152,46 @@ export default function LoginNavigation() {
 							color: color[mode].text
 						},
 						title: "Notifications",
+					}}
+				/>
+				<Stack.Screen
+					name="CreateNotification"
+					component={CreateNotification}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Créer une notification",
+					}}
+				/>
+				<Stack.Screen
+					name="EditNotification"
+					component={EditNotification}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Modifier une notification",
+					}}
+				/>
+				<Stack.Screen
+					name="SingleNotification"
+					component={SingleNotification}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Notification",
+						headerRight : (props)=> <CustomSingleNotif	 {...props} />
 					}}
 				/>
 			</Stack.Group>

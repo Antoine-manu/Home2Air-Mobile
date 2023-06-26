@@ -127,7 +127,7 @@ export default function Login({ navigation }) {
 					value={email}
 					keyboardType="email-address"
 					placeholder="Adresse mail"
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 
 				<TextInput
@@ -136,7 +136,7 @@ export default function Login({ navigation }) {
 					value={password}
 					placeholder="Mot de passe"
 					secureTextEntry
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
 				{connected && <Text style={styles.success}>Connecté</Text>}
