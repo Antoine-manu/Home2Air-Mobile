@@ -10,6 +10,7 @@ export default function App() {
     const [userId, setUserId] = useState(null);
     const [token, setToken] = useState(null);
     const [isDark, setIsDark] = useState("light");
+    const [isNotifCustom, setIsNotifCustom] = useState(false);
     const containerTheme = {
         colors: {
             primary: color[isDark].primary,
@@ -28,7 +29,9 @@ export default function App() {
                     token : token,
                     setToken : setToken,
                     theme : isDark,
-                    setTheme : setIsDark
+                    setTheme : setIsDark,
+                    isNotif : isNotifCustom,
+                    setIsNotif : setIsNotifCustom
                 }}
               >
                 <Navigation/>

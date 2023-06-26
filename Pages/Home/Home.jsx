@@ -174,10 +174,11 @@ export default function Home() {
 			<TextInput
 				style={[theme[mode].input, styles.input]}
 				placeholder="Chercher un capteur"
+
 				onChangeText={(text) => {
 					searchSensors(text);
 				}}
-				placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+				placeholderTextColor={color[mode].textSecondary}
 			/>
 			<View style={styles.sensors}>
 				{searchResults

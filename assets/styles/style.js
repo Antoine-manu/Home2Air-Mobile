@@ -87,9 +87,6 @@ export const theme = {
             backgroundColor: color.dark.secondaryBackground,
             padding: 12,
             borderRadius: 8,
-            label: {
-                marginBottom: -10
-            },
             input : {
                 alignItems: "center",
                 borderRadius: 32,
@@ -121,9 +118,6 @@ export const theme = {
             elevation: 5,
             paddingLeft: 18,
             padding: 10,
-            // placeholder : {
-            //     color : color.light.text
-            // },
         },
         btn: {
             marginTop: 24,
@@ -160,9 +154,6 @@ export const theme = {
             backgroundColor: color.light.secondaryBackground,
             padding: 12,
             borderRadius: 8,
-            label: {
-                marginBottom: -10
-            },
             input : {
                 alignItems: "center",
                 borderRadius: 32,
@@ -187,13 +178,7 @@ export const theme = {
 export const pickerSelectStyles = {
     dark : {
         inputIOS: {
-            paddingVertical: 12,
-            paddingHorizontal: 10,
-            paddingLeft: 18,
-            borderRadius: 12,
-            marginTop: 14,
-            backgroundColor: color.dark.secondaryBackground,
-            color: color.dark.text,
+            color: color.dark.textSecondary,
             shadowColor: 'black',
             shadowOffset: {
                 width: 6,
@@ -204,11 +189,6 @@ export const pickerSelectStyles = {
             paddingRight: 30 // to ensure the text is never behind the icon
         },
         inputAndroid: {
-            paddingVertical: 12,
-            paddingLeft: 18,
-            paddingHorizontal: 10,
-            borderRadius: 32,
-            backgroundColor: '#f7f7f7',
             shadowColor: 'black',
             shadowOffset: {
                 width: 6,
@@ -221,12 +201,7 @@ export const pickerSelectStyles = {
     },
     light : {
         inputIOS: {
-            paddingVertical: 12,
-            paddingHorizontal: 10,
-            paddingLeft: 18,
-            borderRadius: 12,
-            marginTop: 14,
-            backgroundColor: '#f7f7f7',
+            color: color.dark.textSecondary,
             shadowColor: 'black',
             shadowOffset: {
                 width: 6,
@@ -234,14 +209,8 @@ export const pickerSelectStyles = {
             },
             shadowOpacity: 0.1,
             shadowRadius: 8,
-            paddingRight: 30 // to ensure the text is never behind the icon
         },
         inputAndroid: {
-            paddingVertical: 12,
-            paddingLeft: 18,
-            paddingHorizontal: 10,
-            borderRadius: 32,
-            backgroundColor: '#f7f7f7',
             shadowColor: 'black',
             shadowOffset: {
                 width: 6,
