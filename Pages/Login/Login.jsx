@@ -19,6 +19,8 @@ export default function Login({ navigation }) {
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
+	const setDarkMode = userContext.setTheme;
+	const setIsNotif = userContext.setIsNotif;
 	const mode = userContext.theme;
 	const saveUserData = async (key, value) => {
 		await SecureStore.setItemAsync(key, value);
@@ -36,6 +38,18 @@ export default function Login({ navigation }) {
 				userContext.setUserId(jsonData.userId);
 				userContext.setToken(jsonData.token);
 				setConnected(true);
+				const id = jsonData.userId
+				const token = jsonData.token
+				try {
+					const response = await fetchRoute('user/find-one-by-id', 'POST', {id}, token);
+					if (response) {
+						setDarkMode(response.darkMode == true ? "dark" : "light");
+						setIsNotif(response.active);
+					}
+				} catch (error) {
+					console.error("ERROR : ", error.message);
+					setError(error.message);
+				}
 			}
 		} catch (error) {
 			console.error(error.message);
