@@ -14,7 +14,7 @@ import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
 
 export default function Login({ navigation }) {
-	const [email, setEmail] = useState('Daveloper@test.com');
+	const [email, setEmail] = useState("Daveloper@test.com");
 	const [password, setPassword] = useState('test');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
@@ -97,7 +97,7 @@ export default function Login({ navigation }) {
 		},
 		inputBox: {
 			marginTop: 26,
-			alignItems: "center"
+			alignItems: 'center'
 		},
 		btn: {
 			marginTop: 24,

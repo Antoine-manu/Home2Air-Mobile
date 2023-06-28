@@ -13,22 +13,24 @@ import {
 	ScrollView
 } from 'react-native';
 import Text from '../../../Components/Text';
+import Select from '../../../Components/Select';
+import RadioButton from '../../../Components/Radio';
 
 export default function EditSensor({ navigation, route }) {
 	const { id } = route.params;
 	const [name, setName] = useState('');
-	const [edited, setEdited] = useState('');
 	const [room, setRoom] = useState({});
 	const [params, setParams] = useState({});
 	const [rooms, setRooms] = useState([]);
-	const [temperature, setTemperature] = useState('Celsius');
+	const [temperature, setTemperature] = useState('');
 	const [select, setSelect] = useState('');
 	const [isEnabled, setIsEnabled] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isDeleted, setIsDeleted] = useState(false);
+	const data = [{ value: 'Celsius' }, { value: 'Fahrenheit' }];
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
-	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
+	const toggleSwitch = () => setIsEnabled((isEnabled) => !isEnabled);
 	const styles = StyleSheet.create({
 		content: {
 			width: '90%',
@@ -88,7 +90,6 @@ export default function EditSensor({ navigation, route }) {
 			marginTop: 24
 		}
 	});
-
 	const selectStyle = {
 		inputIOS: {
 			placeholder: {
@@ -133,11 +134,11 @@ export default function EditSensor({ navigation, route }) {
 			);
 			if (response) {
 				const parameters = JSON.parse(response.parameters);
+
 				const r = await findMonitoredRoom(response.room_id);
-				console.log('r', r);
 				setName(response.name);
 				setRoom(r);
-				setSelect(r.id);
+				setSelect(r);
 				setParams(parameters);
 				setTemperature(parameters.temperature);
 				setIsEnabled(parameters.notifications);
@@ -149,39 +150,54 @@ export default function EditSensor({ navigation, route }) {
 		}
 	};
 
-	const updateSensorData = async () => {
+	const updateSensorData = async (key, value) => {
 		const parameters = {
 			notifications: isEnabled,
 			advanced: '',
 			temperature: temperature
 		};
-		console.log(
-			'params',
-			`sensor/update/${id}`,
-			'post',
-			{
-				name: name,
-				room_id: Number(select),
-				createdBy: userContext.userId,
-				parameters: JSON.stringify(parameters),
-				updatedAt: getCurrentDate(),
-				active: true
-			},
-			userContext.token
-		);
+		for (const param in parameters) {
+			console.log(key, value);
+			if (key == param) {
+				parameters[key] = value;
+			}
+		}
+		const inputs = {
+			name: name,
+			room_id: select.id,
+			createdBy: userContext.userId,
+			parameters: JSON.stringify(parameters),
+			updatedAt: getCurrentDate(),
+			active: true
+		};
+
+		for (const input in inputs) {
+			console.log('key', key, value);
+			if (key == input) {
+				inputs[key] = value.value ? value.value : value;
+			}
+		}
+
 		const response = await fetchRoute(
 			`sensor/update/${id}`,
 			'post',
-			{
-				name: name,
-				room_id: Number(select),
-				createdBy: userContext.userId,
-				parameters: JSON.stringify(parameters),
-				updatedAt: getCurrentDate(),
-				active: true
-			},
+			inputs,
 			userContext.token
 		);
+		console.log(response);
+	};
+
+	const deleteSensor = async () => {
+		const inputs = {
+			deleted: 1
+		};
+		const response = await fetchRoute(
+			`sensor/update/${id}`,
+			'post',
+			inputs,
+			userContext.token
+		);
+		console.log(response);
 	};
 
 	const findMonitoredRoom = async (id) => {
@@ -197,7 +213,6 @@ export default function EditSensor({ navigation, route }) {
 	const pickerItems = rooms.map((r) => {
 		return { label: `${r.name}`, value: `${r.id}` };
 	});
-	console.log('select', select);
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<Text style={styles.title}>Informations</Text>
@@ -209,41 +224,34 @@ export default function EditSensor({ navigation, route }) {
 					defaultValue={name}
 					onChangeText={(value) => {
 						setName(value);
-						updateSensorData();
+						updateSensorData('name', value);
 					}}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Pièce</Text>
-				{/* <RNPickerSelect
-					onValueChange={(value) => {
+				<Text style={styles.title}>{select ? select.name : room.name}</Text>
+				<Select
+					label="Sélectionnez une option"
+					data={pickerItems}
+					onSelect={(value) => {
 						setSelect(value);
-						updateSensorData();
+						updateSensorData('room_id', value);
 					}}
-					items={pickerItems}
+					defaultValue={select.name}
 					style={pickerSelectStyles[mode]}
-					value={select}
-				/> */}
-				<TextInput
-					style={styles.hidden}
-					defaultValue={room.name}
-					value={room.name}
 				/>
-			<TextInput style={styles.hidden} defaultValue={room} />
 			</View>
-
 			<Text style={styles.title}>Paramètres généraux</Text>
 			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Temperature</Text>
-				{/* <RNPickerSelect
+				<Text style={styles.title}>Temperature</Text>
+				<RadioButton
+					data={data}
 					value={temperature}
-					onValueChange={(value) => setTemperature(value)}
-					style={selectStyle}
-					items={[
-						{ label: 'Celsius', value: 'Celsius' },
-						{ label: 'Fahrenheit', value: 'Fahrenheit' }
-					]}
-				/> */}
+					onSelect={(value) => {
+						setTemperature(value);
+						updateSensorData('temperature', value);
+					}}
+				/>
 			</View>
 			<Text style={styles.title}>Notifications</Text>
 			<View style={styles.switchGroup}>
@@ -251,13 +259,23 @@ export default function EditSensor({ navigation, route }) {
 				<Switch
 					trackColor={{ false: color[mode].grey, true: color[mode].blue }}
 					thumbColor={isEnabled ? color[mode].light : color[mode].light}
-					onValueChange={toggleSwitch}
+					onValueChange={() => {
+						toggleSwitch();
+						updateSensorData();
+					}}
 					value={isEnabled}
 				/>
 			</View>
 			<View style={styles.bottom}>
 				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
-					<Text style={theme[mode].btnText}>Supprimer</Text>
+					<Button
+						title="Supprimer"
+						onPress={() => {
+							deleteSensor();
+							setIsDeleted(true);
+						}}
+						style={theme[mode].btnText}
+					/>
 				</TouchableOpacity>
 			</View>
 		</ScrollView>
