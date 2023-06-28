@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from 'react';
-import { Picker } from '@react-native-picker/picker';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 import { UserContext } from '../../../Context/UserContext';

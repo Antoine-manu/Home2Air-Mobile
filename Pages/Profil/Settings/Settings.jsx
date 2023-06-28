@@ -13,7 +13,8 @@ import { color, theme } from '../../../assets/styles/style';
 import Text from '../../../Components/Text';
 import { useContext, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { UserContext } from '../../../Context/UserContext';
+import {UserContext} from "../../../Context/UserContext";
+import {fetchRoute} from "../../../Utils/auth";
 
 export default function Settings() {
 	const [isEnabled, setIsEnabled] = useState(false);

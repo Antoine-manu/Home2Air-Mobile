@@ -8,7 +8,6 @@ import {
 	ScrollView,
 	TouchableOpacity
 } from 'react-native';
-import RNPickerSelect from '@react-native-picker/picker';
 import { UserContext } from '../../../Context/UserContext';
 import Text from '../../../Components/Text';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
@@ -96,23 +95,29 @@ export default function CreateSensor() {
 				<TextInput
 					style={[theme[mode].input, styles.input]}
 					placeholder="Ex : Home"
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 					onChangeText={setName}
 					value={name}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
+<<<<<<< HEAD
 				<Text style={styles.label}>Pièce</Text>
+=======
+				<Text style={styles.label}>Piece</Text>
+				{/*
+>>>>>>> 0ee8e1f2a500d7ed777bd7982ac59f38f8964a1e
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
 					items={pickerItems}
 					style={pickerSelectStyles[mode]}
 				/>
+				*/}
 				<TextInput
 					style={styles.hidden}
 					defaultValue={toString(room)}
 					value={room}
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
@@ -122,7 +127,7 @@ export default function CreateSensor() {
 					placeholder="Référence"
 					onChangeText={setReference}
 					value={reference}
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>
 			<View style={styles.bottom}>
