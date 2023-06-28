@@ -1,6 +1,6 @@
-// import { param } from './config';
+import { param } from './config';
 
-const HOST = "http://192.168.1.52:6500/api/v1/";
+const HOST = param.url;
 
 import * as SecureStore from "expo-secure-store";
 import createAlert from "./alert";
@@ -56,7 +56,7 @@ export async function fetchRoute(route, method, params, token = "") {
       throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
     }
     // const json = await response.json();
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error while fetching:", error.message);

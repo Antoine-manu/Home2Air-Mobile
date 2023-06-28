@@ -90,37 +90,37 @@ export default function Register({ data }) {
     }
   });
 
-  return (
-    <ScrollView contentContainerStyle={theme[mode].container}>
-      <View style={styles.inputBox}>
-        {[
-          "username",
-          "firstname",
-          "lastname",
-          "email",
-          "password",
-          "confirmed"
-        ].map((field, index) =>
-          <TextInput
-            key={index}
-            style={theme[mode].input}
-            onChangeText={value => handleChange(field, value)}
-            value={form[field]}
-            placeholder={
-              {
-                username: "Identifiant",
-                firstname: "Prénom",
-                lastname: "Nom de famille",
-                email: "E-mail",
-                password: "Mot de passe",
-                confirmed: "Confirmer le mot de passe"
-              }[field]
-            }
-            placeholderTextColor={mode == "dark" ? "#fff" : "#000"}
-            secureTextEntry={["password", "confirmed"].includes(field)}
-          />
-        )}
-      </View>
+	return (
+		<ScrollView contentContainerStyle={theme[mode].container}>
+			<View style={styles.inputBox}>
+				{[
+					'username',
+					'firstname',
+					'lastname',
+					'email',
+					'password',
+					'confirmed'
+				].map((field, index) => (
+					<TextInput
+						key={index}
+						style={theme[mode].input}
+						onChangeText={(value) => handleChange(field, value)}
+						value={form[field]}
+						placeholder={
+							{
+								username: 'Identifiant',
+								firstname: 'Prénom',
+								lastname: 'Nom de famille',
+								email: 'E-mail',
+								password: 'Mot de passe',
+								confirmed: 'Confirmer le mot de passe'
+							}[field]
+						}
+						placeholderTextColor={mode == "dark" ? "#fff" : "#000"}
+						secureTextEntry={['password', 'confirmed'].includes(field)}
+					/>
+				))}
+			</View>
 
       <TouchableOpacity style={styles.btn}>
         <Button

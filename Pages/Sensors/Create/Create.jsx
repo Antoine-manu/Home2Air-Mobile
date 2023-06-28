@@ -96,7 +96,7 @@ export default function CreateSensor() {
 				<TextInput
 					style={[theme[mode].input, styles.input]}
 					placeholder="Ex : Home"
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 					onChangeText={setName}
 					value={name}
 				/>
@@ -112,7 +112,7 @@ export default function CreateSensor() {
 					style={styles.hidden}
 					defaultValue={toString(room)}
 					value={room}
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>
 			<View style={styles.inputGroup}>
@@ -122,7 +122,7 @@ export default function CreateSensor() {
 					placeholder="Référence"
 					onChangeText={setReference}
 					value={reference}
-					placeholderTextColor={mode == 'dark' ? '#000' : '#fff'}
+					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>
 			<View style={styles.bottom}>
