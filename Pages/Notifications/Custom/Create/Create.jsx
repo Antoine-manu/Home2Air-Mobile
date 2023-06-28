@@ -69,10 +69,15 @@ export default function CreateNotification(){
             alignItems: 'center',
             justifyContent: 'flex-start'
         },
+
         area : {
             height: 100,
-            paddingLeft: 0,
-            paddingTop: 8,
+            width: "100%",
+            borderRadius: 8,
+            padding : 12,
+            paddingTop : 12,
+            marginTop: 8,
+            backgroundColor: color[mode].secondaryBackground,
             layout : {
                 height: 100,
                 flexDirection: 'column',

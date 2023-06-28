@@ -27,7 +27,8 @@ export default function Home() {
 	const [search, setSearch] = useState('');
 	const [searchResults, setSearchResults] = useState(null); // Add a state variable for search results
 
-	const styles = StyleSheet.create({
+	let styles;
+	styles = StyleSheet.create({
 		content: {
 			marginTop: 48
 		},
@@ -68,7 +69,6 @@ export default function Home() {
 			},
 			underText: {
 				marginTop: 6,
-				marginBottom: 20,
 				color: color[mode].darkgrey
 			}
 		},
@@ -86,6 +86,14 @@ export default function Home() {
 		btn: {
 			width: 250,
 			alignItems: 'center'
+		},
+		room: {
+			justifyContent: 'center',
+			alignItems: 'center',
+			flexDirection: "column",
+			title: {
+				marginTop: 24
+			}
 		}
 	});
 
@@ -187,8 +195,8 @@ export default function Home() {
 									capteurs
 								</Text>
 								{place.Room.map((room) => (
-									<View key={room.id}>
-										<Text>{room.name}</Text>
+									<View style={styles.room} key={room.id}>
+										<Text style={styles.room.title}>{room.name}</Text>
 										{room.Sensor.map(
 											(sensor) =>
 												sensor.deleted !== 1 && (

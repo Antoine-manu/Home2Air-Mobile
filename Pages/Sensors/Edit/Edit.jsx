@@ -31,6 +31,7 @@ export default function EditSensor({ navigation, route }) {
 	const data = [{ value: 'Celsius' }, { value: 'Fahrenheit' }];
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
+	console.log("temp : ", isEnabled)
 	const toggleSwitch = () => setIsEnabled((isEnabled) => !isEnabled);
 	const styles = StyleSheet.create({
 		content: {
@@ -153,9 +154,6 @@ export default function EditSensor({ navigation, route }) {
 				setSelect(r);
 				setParams(parameters);
 				setTemperature(parameters.temperature);
-				if(temperature == ""){
-					setTemperature("Celsius")
-				}
 				setIsEnabled(parameters.notifications);
 				setIsLoading(false);
 			}

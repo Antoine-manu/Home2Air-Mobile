@@ -23,14 +23,14 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 	const [selected, setSelected] = useState(_selected);
 	const [_default, setDefault] = useState(defaultValue);
 	const [dropdownTop, setDropdownTop] = useState(0);
-	console.log("ici" , _default, selected, defaultValue)
 
 	const styles = StyleSheet.create({
 		button: {
 			flexDirection: 'row',
 			alignItems: 'center',
-			backgroundColor: '#efefef',
+			backgroundColor: color[mode].secondaryBackground,
 			height: 40,
+			paddingLeft: 12,
 			zIndex: 1
 		},
 		buttonText: {

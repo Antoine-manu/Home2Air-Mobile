@@ -76,24 +76,35 @@ export const theme = {
 			flex: 1
 		},
 		inputGroup: {
-			flexDirection: 'row',
-			alignItems: 'center',
+			flexDirection: 'column',
 			justifyContent: 'space-between',
 			width: '100%',
 			marginTop: 20,
-			backgroundColor: color.dark.secondaryBackground,
-			padding: 12,
+			marginBottom: 16,
 			borderRadius: 8,
-			label: {
-				marginBottom: -10
-			},
+			height: 50,
+			fontWeight: "bold",
 			input: {
 				alignItems: 'center',
-				borderRadius: 32,
-				color: color.dark.text,
+				color: color.dark.textSecondary,
+				backgroundColor: color.dark.secondaryBackground,
+				borderRadius: 8,
 				margin: 0,
-				width: '80%',
-				textAlign: 'right'
+				paddingLeft: 12,
+				marginTop: 8,
+				height: 40,
+				textAlign: 'left'
+			},
+			inputDisable: {
+				backgroundColor: color.dark.grey,
+				alignItems: 'center',
+				color: color.dark.textSecondary,
+				borderRadius: 8,
+				margin: 0,
+				paddingLeft: 12,
+				marginTop: 8,
+				height: 40,
+				textAlign: 'left'
 			}
 		},
 		inputGroupDisable: {
@@ -149,35 +160,47 @@ export const theme = {
 			flex: 1
 		},
 		inputGroup: {
-			flexDirection: 'row',
-			alignItems: 'center',
+			flexDirection: 'column',
 			justifyContent: 'space-between',
 			width: '100%',
 			marginTop: 20,
-			backgroundColor: color.light.secondaryBackground,
-			padding: 12,
+			marginBottom: 16,
 			borderRadius: 8,
 			height: 50,
-			label: {
-				marginBottom: -10
-			},
+			fontWeight: "bold",
 			input: {
 				alignItems: 'center',
-				borderRadius: 32,
+				color: color.light.textSecondary,
+				backgroundColor: color.light.secondaryBackground,
+				borderRadius: 8,
 				margin: 0,
-				width: '80%',
-				textAlign: 'right'
+				paddingLeft: 12,
+				marginTop: 8,
+				height: 40,
+				textAlign: 'left'
+			},
+			inputDisable: {
+				backgroundColor: color.light.grey,
+				alignItems: 'center',
+				color: color.light.textSecondary,
+				borderRadius: 8,
+				margin: 0,
+				paddingLeft: 12,
+				marginTop: 8,
+				height: 40,
+				textAlign: 'left'
 			}
 		},
 		inputGroupDisable: {
-			flexDirection: 'row',
-			alignItems: 'center',
+			flexDirection: 'column',
 			justifyContent: 'space-between',
 			width: '100%',
 			marginTop: 20,
-			backgroundColor: color.light.grey,
+			marginBottom: 16,
 			padding: 12,
-			borderRadius: 8
+			borderRadius: 8,
+			height: 50,
+			fontWeight: "bold",
 		}
 	}
 };

@@ -10,7 +10,6 @@ export default function RadioButton({ data, current, onSelect }) {
 
 	const selectHandler = (value) => {
 		onSelect(value);
-		console.log("current : ", current)
 	};
 
 
