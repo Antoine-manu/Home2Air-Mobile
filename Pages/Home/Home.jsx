@@ -134,15 +134,17 @@ export default function Home() {
 	useEffect(() => {
 		const renderSearchResults = () => {
 			if (searchResults) {
-				return searchResults.map((sensor) => (
-					<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
-				));
+				return searchResults
+					.filter((sensor) => sensor.deleted !== 1) // Exclude sensors with 'deleted' set to 1
+					.map((sensor) => (
+						<SmallSensor id={sensor.id} name={sensor.name} /> // Pass the name prop to SmallSensor
+					));
 			}
 			return null;
 		};
+
 		renderSearchResults();
 	}, [searchResults]);
-
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<View style={styles.header.container}>
@@ -191,13 +193,16 @@ export default function Home() {
 								{place.Room.map((room) => (
 									<View key={room.id}>
 										<Text>{room.name}</Text>
-										{room.Sensor.map((sensor) => (
-											<SmallSensor
-												key={sensor.id}
-												id={sensor.id}
-												name={sensor.name}
-											/>
-										))}
+										{room.Sensor.map(
+											(sensor) =>
+												sensor.deleted !== 1 && (
+													<SmallSensor
+														key={sensor.id}
+														id={sensor.id}
+														name={sensor.name}
+													/>
+												)
+										)}
 									</View>
 								))}
 							</View>

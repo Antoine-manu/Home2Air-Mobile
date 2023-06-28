@@ -61,6 +61,7 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 			</TouchableOpacity>
 		</Modal>
 	);
+
 	return (
 		<TouchableOpacity
 			ref={selectButtonRef}
@@ -69,9 +70,9 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 		>
 			{renderDropdown()}
 			<Text style={styles.buttonText}>
-				{!selected
-					? _default
-					: (selected && `${selected.label} (${selected.value})`) || _default}
+				{selected
+					? selected && `${selected.label} (${selected.value})`
+					: _default}
 			</Text>
 			<Icon style={styles.icon} type="font-awesome" name="chevron-down" />
 		</TouchableOpacity>

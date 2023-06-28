@@ -14,8 +14,8 @@ import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
 
 export default function Login({ navigation }) {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState("Daveloper@test.com");
+	const [password, setPassword] = useState('test');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
 	const userContext = useContext(UserContext);
