@@ -13,8 +13,11 @@ import { UserContext } from '../../../Context/UserContext';
 import Text from '../../../Components/Text';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
+import Select from "../../../Components/Select";
+import {useNavigation} from "@react-navigation/native";
 
 export default function CreateSensor() {
+	const navigation = useNavigation();
 	const [name, setName] = useState('');
 	const [room, setRoom] = useState(0);
 	const [rooms, setRooms] = useState([]);
@@ -34,7 +37,7 @@ export default function CreateSensor() {
 
 	const createSensor = async () => {
 		const createdBy = `${userContext.userId}`;
-		const room_id = room;
+		const room_id = room.value;
 		const jsonData = {
 			name,
 			room_id,
@@ -47,12 +50,14 @@ export default function CreateSensor() {
 			jsonData,
 			userContext.token
 		);
+		if(response){
+			navigation.navigate("Home")
+		}
 	};
 
 	const pickerItems = rooms.map((r) => {
 		return { label: `${r.name}`, value: `${r.id}` };
 	});
-
 	const styles = StyleSheet.create({
 		content: {
 			width: '90%',
@@ -103,9 +108,10 @@ export default function CreateSensor() {
 			</View>
 			<View style={styles.inputGroup}>
 				<Text style={styles.label}>Pièce</Text>
-				<RNPickerSelect
-					onValueChange={(value) => setRoom(value)}
-					items={pickerItems}
+				<Select
+					label="Sélectionnez une option"
+					data={pickerItems}
+					onSelect={(value) => setRoom(value)}
 					style={pickerSelectStyles[mode]}
 				/>
 				<TextInput
@@ -126,8 +132,8 @@ export default function CreateSensor() {
 				/>
 			</View>
 			<View style={styles.bottom}>
-				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
-					<Text style={theme[mode].btnText} onPress={createSensor}>
+				<TouchableOpacity style={[theme[mode].btn, styles.btn]} onPress={createSensor}>
+					<Text style={theme[mode].btnText}>
 						Créer le capteur
 					</Text>
 				</TouchableOpacity>

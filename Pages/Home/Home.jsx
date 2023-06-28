@@ -179,12 +179,12 @@ export default function Home() {
 							<View key={place.id}>
 								<Text style={styles.sensors.title}>{place.name}</Text>
 								<Text style={styles.sensors.underText}>
-									-
+
 									{place.Room.reduce(
 										(sum, room) => sum + room.Sensor.length,
 										0
-									)}
-									- capteurs
+									) + " "}
+									capteurs
 								</Text>
 								{place.Room.map((room) => (
 									<View key={room.id}>
