@@ -157,6 +157,7 @@ export const theme = {
 			backgroundColor: color.light.secondaryBackground,
 			padding: 12,
 			borderRadius: 8,
+			height: 50,
 			label: {
 				marginBottom: -10
 			},
