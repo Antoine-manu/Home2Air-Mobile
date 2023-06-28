@@ -71,8 +71,12 @@ export default function Single(){
         },
         area : {
             height: 100,
-            paddingLeft: 0,
-            paddingTop: 8,
+            width: "100%",
+            borderRadius: 8,
+            padding : 12,
+            paddingTop : 12,
+            marginTop: 8,
+            backgroundColor: color[mode].grey,
             layout : {
                 height: 100,
                 flexDirection: 'column',
@@ -90,16 +94,16 @@ export default function Single(){
 
     return (
         <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
-            <View style={theme[mode].inputGroupDisable}>
+            <View style={theme[mode].inputGroup}>
                 <Text style={theme[mode].inputGroup.label}>Titre</Text>
-                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez le titre de la notification"}/>
+                <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez le titre de la notification"}/>
             </View>
-            <View style={theme[mode].inputGroupDisable}>
+            <View style={theme[mode].inputGroup}>
                 <Text style={theme[mode].inputGroup.label}>Donnée</Text>
-                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Sélectionnez une donnée"}/>
+                <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Sélectionnez une donnée"}/>
                 {/*Select here*/}
             </View>
-            <View style={theme[mode].inputGroupDisable}>
+            <View style={theme[mode].inputGroup}>
                 <Text style={styles.radioLayout.text}>Echelle</Text>
                 <View style={styles.radioLayout.radio}>
                     <TouchableOpacity style={[styles.radio]}>
@@ -113,13 +117,13 @@ export default function Single(){
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={[theme[mode].inputGroupDisable, styles.area.layout]}>
+            <View style={[theme[mode].inputGroup, styles.area.layout]}>
                 <Text style={theme[mode].inputGroup.label}>Message</Text>
-                <TextInput numberOfLines={20} multiline={true} style={[ styles.area]} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez la description de la notification"}/>
+                <TextInput numberOfLines={20} multiline={true} style={[styles.area]} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Entrez la description de la notification"}/>
             </View>
-            <View style={theme[mode].inputGroupDisable}>
+            <View style={theme[mode].inputGroup}>
                 <Text style={theme[mode].inputGroup.label}>Icon</Text>
-                <TextInput style={theme[mode].inputGroup.input} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Icon"}/>
+                <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} placeholderTextColor={color[mode].textSecondary} placeholder={"Icon"}/>
                 {/*Select here*/}
             </View>
         </ScrollView>

@@ -30,67 +30,75 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState(null); // Add a state variable for search results
 
-  const styles = StyleSheet.create({
-    content: {
-      marginTop: 48
-    },
-    header: {
-      title: {
-        fontSize: 20,
-        fontWeight: "bold"
-      },
-      container: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: 350
-      },
-      right: {
-        layout: {
-          flexDirection: "row",
-          alignItems: "center",
-          width: 100,
-          justifyContent: "space-between"
-        },
-        pp: {
-          width: 50,
-          height: 50,
-          borderRadius: 50
-        }
-      }
-    },
-    input: {
-      width: 350
-    },
-    sensors: {
-      alignItems: "center",
-      title: {
-        marginTop: 24,
-        fontSize: 20,
-        fontWeight: "bold"
-      },
-      underText: {
-        marginTop: 6,
-        marginBottom: 20,
-        color: color[mode].darkgrey
-      }
-    },
-    bottom: {
-      backgroundColor: color[mode].background,
-      zIndex: 10,
-      width: "100%",
-      height: "15%",
-      marginTop: "auto",
-      bottom: 0,
-      // position: "fixed",
-      alignItems: "center",
-      justifyContent: "flex-start"
-    },
-    btn: {
-      width: 250,
-      alignItems: "center"
-    }
-  });
+	let styles;
+	styles = StyleSheet.create({
+		content: {
+			marginTop: 48
+		},
+		header: {
+			title: {
+				fontSize: 20,
+				fontWeight: 'bold'
+			},
+			container: {
+				flexDirection: 'row',
+				justifyContent: 'space-between',
+				alignItems: 'center',
+				width: 350
+			},
+			right: {
+				layout: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					width: 100,
+					justifyContent: 'space-between'
+				},
+				pp: {
+					width: 50,
+					height: 50,
+					borderRadius: 50
+				}
+			}
+		},
+		input: {
+			width: 350
+		},
+		sensors: {
+			alignItems: 'center',
+			title: {
+				marginTop: 24,
+				fontSize: 20,
+				fontWeight: 'bold'
+			},
+			underText: {
+				marginTop: 6,
+				color: color[mode].darkgrey
+			}
+		},
+		bottom: {
+			backgroundColor: color[mode].background,
+			zIndex: 10,
+			width: '100%',
+			height: '15%',
+			marginTop: 'auto',
+			bottom: 0,
+			// position: "fixed",
+			alignItems: 'center',
+			justifyContent: 'flex-start'
+		},
+		btn: {
+			width: 250,
+			alignItems: 'center'
+		},
+		room: {
+			justifyContent: 'center',
+			alignItems: 'center',
+			flexDirection: "column",
+			title: {
+				marginTop: 24
+			}
+		}
+	});
 
   useEffect(() => {
     getPlacesList();
@@ -105,7 +113,7 @@ export default function Home() {
     setRooms(response);
     console.log("room", response);
   };
-  
+
   const getPlacesList = async () => {
     const places = await fetchRoute(
       "/place/find-user-place",
@@ -215,8 +223,8 @@ export default function Home() {
       <View style={styles.sensors}>
         {rooms.length > 0
           ? rooms.map(room =>
-              <View key={room.id}>
-                <Text>
+              <View style={styles.room} key={room.id}>
+                <Text style={styles.room.title}>
                   {room.name}
                 </Text>
                 {room.Sensor.map(

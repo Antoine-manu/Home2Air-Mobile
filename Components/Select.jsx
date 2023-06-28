@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -7,9 +7,16 @@ import {
 	FlatList,
 	Modal
 } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import { Icon } from '@rneui/themed';
+import { theme, color } from '../assets/styles/style';
+import {useNavigation} from "@react-navigation/native";
+import {UserContext} from "../Context/UserContext";
 
 const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
+	const navigation = useNavigation();
+	const userContext = useContext(UserContext);
+	const mode = userContext.theme;
 	const selectButtonRef = useRef(null);
 	const [label, setLabel] = useState(_label);
 	const [visible, setVisible] = useState(false);
@@ -17,10 +24,44 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 	const [_default, setDefault] = useState(defaultValue);
 	const [dropdownTop, setDropdownTop] = useState(0);
 
+	const styles = StyleSheet.create({
+		button: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			backgroundColor: color[mode].secondaryBackground,
+			height: 40,
+			paddingLeft: 12,
+			zIndex: 1
+		},
+		buttonText: {
+			/*flex: 1,
+			textAlign: 'center'*/
+		},
+		dropdown: {
+			position: 'absolute',
+			backgroundColor: color[mode].secondaryBackground,
+			width: '100%',
+			shadowColor: '#464646',
+			shadowRadius: 4,
+			shadowOffset: { height: 4, width: 0 },
+			shadowOpacity: 0.3
+		},
+		overlay: {
+			marginLeft: '5%',
+			width: '90%',
+			height: '100%'
+		},
+		item: {
+			paddingHorizontal: 10,
+			paddingVertical: 10,
+		}
+	});
+
+
 	useEffect(() => {
 		setSelected(selected);
 		setDefault(defaultValue);
-	}, [selected]);
+	}, [defaultValue]);
 
 	const toggleDropdown = () => {
 		visible ? setVisible(false) : openDropdown();
@@ -71,47 +112,12 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 			{renderDropdown()}
 			<Text style={styles.buttonText}>
 				{selected
-					? selected && `${selected.label} (${selected.value})`
+					? selected && `${selected.label}`
 					: _default}
 			</Text>
-			<Icon style={styles.icon} type="font-awesome" name="chevron-down" />
+			<Entypo style={styles.icon} name="chevron-small-down" size={24} color="black" />
 		</TouchableOpacity>
 	);
 };
-
-const styles = StyleSheet.create({
-	button: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#efefef',
-		height: 50,
-		zIndex: 1
-	},
-	buttonText: {
-		flex: 1,
-		textAlign: 'center'
-	},
-	icon: {
-		marginRight: 10
-	},
-	dropdown: {
-		position: 'absolute',
-		backgroundColor: '#fff',
-		width: '100%',
-		shadowColor: '#000000',
-		shadowRadius: 4,
-		shadowOffset: { height: 4, width: 0 },
-		shadowOpacity: 0.5
-	},
-	overlay: {
-		width: '100%',
-		height: '100%'
-	},
-	item: {
-		paddingHorizontal: 10,
-		paddingVertical: 10,
-		borderBottomWidth: 1
-	}
-});
 
 export default Select;

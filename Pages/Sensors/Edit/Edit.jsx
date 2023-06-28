@@ -31,6 +31,7 @@ export default function EditSensor({ navigation, route }) {
 	const data = [{ value: 'Celsius' }, { value: 'Fahrenheit' }];
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
+	console.log("temp : ", isEnabled)
 	const toggleSwitch = () => setIsEnabled((isEnabled) => !isEnabled);
 	const styles = StyleSheet.create({
 		content: {
@@ -49,13 +50,21 @@ export default function EditSensor({ navigation, route }) {
 			alignItems: 'center',
 			justifyContent: 'space-between',
 			width: '100%',
+			height : 50,
 			marginTop: 20,
 			backgroundColor: color[mode].secondaryBackground,
 			padding: 12,
 			borderRadius: 8
 		},
+		temp: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'space-between',
+			width: '100%',
+			height : 50,
+			borderRadius: 8
+		},
 		label: {
-			marginBottom: -10,
 			color: color[mode].text
 		},
 		switchGroup: {
@@ -80,6 +89,9 @@ export default function EditSensor({ navigation, route }) {
 			width: 250,
 			alignItems: 'center',
 			backgroundColor: color[mode].red
+		},
+		btnText: {
+			color: color[mode].light
 		},
 		hidden: {
 			display: 'none'
@@ -225,25 +237,24 @@ export default function EditSensor({ navigation, route }) {
 					}}
 				/>
 			</View>
-			<View style={styles.inputGroup}>
-				<Text style={styles.title}>{select ? select.name : room.name}</Text>
+			<View style={theme[mode].inputGroup}>
+				<Text>Pièce</Text>
 				<Select
-					label="Sélectionnez une option"
 					data={pickerItems}
+					style={theme[mode].inputGroup.input}
 					onSelect={(value) => {
 						setSelect(value);
 						updateSensorData('room_id', value);
 					}}
 					defaultValue={select.name}
-					style={pickerSelectStyles[mode]}
 				/>
 			</View>
-			<Text style={styles.title}>Paramètres généraux</Text>
-			<View style={styles.inputGroup}>
-				<Text style={styles.title}>Temperature</Text>
+			<Text style={styles.title}>Paramètres de temperature</Text>
+			<View>
 				<RadioButton
 					data={data}
 					value={temperature}
+					current ={temperature}
 					onSelect={(value) => {
 						setTemperature(value);
 						updateSensorData('temperature', value);
@@ -264,15 +275,12 @@ export default function EditSensor({ navigation, route }) {
 				/>
 			</View>
 			<View style={styles.bottom}>
-				<TouchableOpacity style={[theme[mode].btn, styles.btn]}>
-					<Button
-						title="Supprimer"
-						onPress={() => {
-							deleteSensor();
-							setIsDeleted(true);
-						}}
-						style={theme[mode].btnText}
-					/>
+				<TouchableOpacity style={[theme[mode].btn, styles.btn]}
+								  onPress={() => {
+									  deleteSensor();
+									  setIsDeleted(true);
+								  }}>
+					<Text style={styles.btnText}> Supprimer </Text>
 				</TouchableOpacity>
 			</View>
 		</ScrollView>
