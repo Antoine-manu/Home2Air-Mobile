@@ -158,7 +158,6 @@ export default function EditSensor({ navigation, route }) {
 			temperature: temperature
 		};
 		for (const param in parameters) {
-			console.log(key, value);
 			if (key == param) {
 				parameters[key] = value;
 			}
@@ -173,7 +172,6 @@ export default function EditSensor({ navigation, route }) {
 		};
 
 		for (const input in inputs) {
-			console.log('key', key, value);
 			if (key == input) {
 				inputs[key] = value.value ? value.value : value;
 			}
@@ -185,7 +183,6 @@ export default function EditSensor({ navigation, route }) {
 			inputs,
 			userContext.token
 		);
-		console.log(response);
 	};
 
 	const deleteSensor = async () => {
@@ -198,7 +195,6 @@ export default function EditSensor({ navigation, route }) {
 			inputs,
 			userContext.token
 		);
-		console.log(response);
 	};
 
 	const findMonitoredRoom = async (id) => {

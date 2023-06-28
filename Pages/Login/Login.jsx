@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
 
 	const loginUser = async () => {
 		try {
-			const jsonData = await fetchRoute('auth/login', 'POST', {
+			const jsonData = await fetchRoute('/auth/login', 'POST', {
 				email,
 				password
 			});

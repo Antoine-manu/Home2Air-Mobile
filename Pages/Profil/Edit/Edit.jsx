@@ -41,7 +41,6 @@ export default function Profil(){
                 userContext.token
             );
             if (response) {
-                console.log('r', response);
                 setEmail(response.email)
                 setFirstName(response.first_name)
                 setLastName(response.last_name)
@@ -67,7 +66,6 @@ export default function Profil(){
                 userContext.token
             );
             if (response) {
-                console.log('r', response);
                 navigation.navigate('Profil')
             }
         } catch (error) {
