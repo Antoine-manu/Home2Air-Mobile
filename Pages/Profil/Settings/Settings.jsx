@@ -1,15 +1,17 @@
 import {
-    StyleSheet,
-    View,
-    Image,
-    ScrollView,
-    TextInput,
-    Button,
-    TouchableOpacity, Switch, Appearance
+	StyleSheet,
+	View,
+	Image,
+	ScrollView,
+	TextInput,
+	Button,
+	TouchableOpacity,
+	Switch,
+	Appearance
 } from 'react-native';
-import {color, theme} from "../../../assets/styles/style";
-import Text from "../../../Components/Text";
-import {useContext, useState} from "react";
+import { color, theme } from '../../../assets/styles/style';
+import Text from '../../../Components/Text';
+import { useContext, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {UserContext} from "../../../Context/UserContext";
 import {fetchRoute} from "../../../Utils/auth";
@@ -47,63 +49,59 @@ export default function Settings(){
         }
     };
 
-    const styles = StyleSheet.create({
-        content : {
-            marginTop: 24,
-            width: "90%",
-            alignSelf: "center"
-        },
-        switchGroupe : {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: "100%",
-            marginBottom: 16,
-            label : {
-                width: "70%",
-                title : {
-                    fontSize: 16,
-                    fontWeight: "bold"
-                },
-                subtitle : {
-                    fontSize: 12,
-                    color: color[mode].darkgrey,
-                    marginTop: 4,
-                }
+	const styles = StyleSheet.create({
+		content: {
+			marginTop: 24,
+			width: '90%',
+			alignSelf: 'center'
+		},
+		switchGroupe: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			width: '100%',
+			marginBottom: 16,
+			label: {
+				width: '70%',
+				title: {
+					fontSize: 16,
+					fontWeight: 'bold'
+				},
+				subtitle: {
+					fontSize: 12,
+					color: color[mode].darkgrey,
+					marginTop: 4
+				}
+			}
+		},
+		daynight: {
+			backgroundColor: color[mode].grey,
+			alignItems: 'center',
+			padding: 6,
+			borderRadius: 32,
+			height: 39,
+			width: 39,
 
-            }
+			icon: {},
 
-        },
-        daynight : {
-            backgroundColor: color[mode].grey,
-            alignItems: 'center',
-            padding: 6,
-            borderRadius: 32,
-            height: 39,
-            width: 39,
-
-            icon : {
-
-            },
-
-            layout : {
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "24%",
-            }
-        },
-        day : {
-            backgroundColor: color[mode].yellow,
-            icon : {
-                color : color.light
-            }
-        },
-        night : {
-            backgroundColor: color[mode].primary,
-            icon : {
-                color : color[mode].light
-            }
-        }
-    })
+			layout: {
+				flexDirection: 'row',
+				justifyContent: 'space-between',
+				width: '24%'
+			}
+		},
+		day: {
+			backgroundColor: color[mode].yellow,
+			icon: {
+				color: color.light
+			}
+		},
+		night: {
+			backgroundColor: color[mode].primary,
+			icon: {
+				color: color[mode].light
+			}
+		}
+	});
 
     return(
         <>

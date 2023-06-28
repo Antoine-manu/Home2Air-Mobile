@@ -1,0 +1,6 @@
+{
+    "editor.fontSize": 15,
+    "editor.fontFamily": "Fira Mono",
+    "editor.multiCursorModifier": "ctrlCmd",
+    "files.autoSave": "onWindowChange"
+}
