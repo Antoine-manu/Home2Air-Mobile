@@ -20,6 +20,7 @@ export default function SmallSensor({ id, name }) {
 		},
 		btnSmallText: {},
 		smallSensor: {
+			marginTop : 16,
 			width: 350,
 			height: 110,
 			padding: 16,

@@ -106,13 +106,13 @@ export default function CreateSensor() {
 					value={name}
 				/>
 			</View>
-			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Pièce</Text>
+			<View style={theme[mode].inputGroup}>
+				<Text >Pièce</Text>
 				<Select
 					label="Sélectionnez une option"
 					data={pickerItems}
 					onSelect={(value) => setRoom(value)}
-					style={pickerSelectStyles[mode]}
+					style={theme[mode].inputGroup.input}
 				/>
 				<TextInput
 					style={styles.hidden}

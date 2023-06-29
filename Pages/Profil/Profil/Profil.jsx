@@ -101,21 +101,21 @@ export default function Profil(){
         <>
             <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
                 <Image style={styles.image} source={require('../../../assets/pp.jpeg')}/>
-                <View style={theme[mode].inputGroupDisable}>
+                <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Prénom</Text>
-                    <TextInput style={theme[mode].inputGroup.input} editable={false} defaultValue={firstname}/>
+                    <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} defaultValue={firstname}/>
                 </View>
-                <View style={theme[mode].inputGroupDisable}>
+                <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Nom</Text>
-                    <TextInput style={theme[mode].inputGroup.input} editable={false} defaultValue={lastname}/>
+                    <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} defaultValue={lastname}/>
                 </View>
-                <View style={theme[mode].inputGroupDisable}>
+                <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Email</Text>
-                    <TextInput style={theme[mode].inputGroup.input} editable={false} defaultValue={email}/>
+                    <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} defaultValue={email}/>
                 </View>
-                <View style={theme[mode].inputGroupDisable}>
+                <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Identifiant</Text>
-                    <TextInput style={theme[mode].inputGroup.input} editable={false} defaultValue={username}/>
+                    <TextInput style={theme[mode].inputGroup.inputDisable} editable={false} defaultValue={username}/>
                 </View>
                 <View style={styles.bottom}>
                     <TouchableOpacity style={[theme[mode].btn, styles.btn, theme[mode].shadow]} onPress={() => userContext.setToken(null)}>
