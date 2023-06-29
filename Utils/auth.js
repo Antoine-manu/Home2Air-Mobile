@@ -56,7 +56,7 @@ export async function fetchRoute(route, method, params, token = "") {
       throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
     }
     // const json = await response.json();
-    
+
     return await response.json();
   } catch (error) {
     console.error("Error while fetching:", error.message);

@@ -16,14 +16,38 @@ import { Ionicons } from '@expo/vector-icons';
 import {UserContext} from "../../../Context/UserContext";
 import {fetchRoute} from "../../../Utils/auth";
 
-export default function Settings() {
-	const [isEnabled, setIsEnabled] = useState(false);
-	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-	const userContext = useContext(UserContext);
-	const mode = userContext.theme;
-	const setMode = userContext.setTheme;
+export default function Settings(){
 
-	const colorScheme = Appearance.getColorScheme();
+    const userContext = useContext(UserContext);
+    const [isEnabled, setIsEnabled] = useState(userContext.isNotif);
+    const setNotif = userContext.setIsNotif
+
+    const toggleSwitch = () => {
+        setIsEnabled(previousState => !previousState);
+        setNotif(isEnabled)
+        updateUserData()
+    };
+    const mode = userContext.theme
+    const setMode = userContext.setTheme
+    const id = userContext.userId
+
+    const colorScheme = Appearance.getColorScheme();
+
+    const updateUserData = async () => {
+        try {
+            const response = await fetchRoute(
+                `user/update/${id}`,
+                'post',
+                {
+                    darkMode: mode == "light" ? 1 : 0,
+                    active: isEnabled == true ? 0 : 1,
+                },
+                userContext.token
+            );
+        } catch (error) {
+            console.error('erroor ' , error);
+        }
+    };
 
 	const styles = StyleSheet.create({
 		content: {
@@ -79,75 +103,43 @@ export default function Settings() {
 		}
 	});
 
-	return (
-		<>
-			<ScrollView
-				contentContainerStyle={[theme[mode].container, styles.content]}
-			>
-				<View style={styles.switchGroupe}>
-					<View style={styles.switchGroupe.label}>
-						<Text style={styles.switchGroupe.label.title}>Notifications</Text>
-						<Text style={styles.switchGroupe.label.subtitle}>
-							Permettre a l'application d'envoyer des notifications
-						</Text>
-					</View>
-					<Switch
-						trackColor={{ false: color[mode].grey, true: color[mode].blue }}
-						thumbColor={isEnabled ? color[mode].light : color[mode].light}
-						ios_backgroundColor="#3e3e3e"
-						onValueChange={toggleSwitch}
-						value={isEnabled}
-					/>
-				</View>
-				<View style={styles.switchGroupe}>
-					<View style={styles.switchGroupe.label}>
-						<Text style={styles.switchGroupe.label.title}>
-							Mode d'affichage
-						</Text>
-						<Text style={styles.switchGroupe.label.subtitle}>
-							Selectionnez le mode d'affichage de votre application
-						</Text>
-					</View>
-					<View style={styles.daynight.layout}>
-						<TouchableOpacity
-							style={
-								mode == 'dark' ? styles.daynight : [styles.daynight, styles.day]
-							}
-							onPress={() => setMode('light')}
-						>
-							<Ionicons
-								style={
-									mode == 'dark'
-										? styles.daynight.icon
-										: [styles.daynight.icon, styles.day.icon]
-								}
-								name="sunny"
-								size={24}
-								color="black"
-							/>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={
-								mode == 'dark'
-									? [styles.daynight, styles.night]
-									: styles.daynight
-							}
-							onPress={() => setMode('dark')}
-						>
-							<Ionicons
-								style={
-									mode == 'dark'
-										? [styles.daynight.icon, styles.night.icon]
-										: styles.daynight.icon
-								}
-								name="ios-moon"
-								size={24}
-								color="black"
-							/>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</ScrollView>
-		</>
-	);
+    return(
+        <>
+            <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
+                <View style={styles.switchGroupe}>
+                    <View style={styles.switchGroupe.label}>
+                        <Text style={styles.switchGroupe.label.title}>Notifications</Text>
+                        <Text style={styles.switchGroupe.label.subtitle}>Permettre a l'application d'envoyer des notifications</Text>
+                    </View>
+                    <Switch
+                        trackColor={{false: color[mode].grey, true: color[mode].blue}}
+                        thumbColor={isEnabled ? color[mode].light : color[mode].light}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
+                    />
+                </View>
+                <View style={styles.switchGroupe}>
+                    <View style={styles.switchGroupe.label}>
+                        <Text style={styles.switchGroupe.label.title}>Mode d'affichage</Text>
+                        <Text style={styles.switchGroupe.label.subtitle}>Selectionnez le mode d'affichage de votre application</Text>
+                    </View>
+                    <View style={styles.daynight.layout}>
+                        <TouchableOpacity style={mode == "dark" ? styles.daynight : [styles.daynight, styles.day ]} onPress={() => {
+                            setMode("light")
+                            updateUserData()
+                        }}>
+                            <Ionicons style={mode == "dark" ? styles.daynight.icon : [styles.daynight.icon, styles.day.icon ]} name="sunny" size={24} color="black" />
+                        </TouchableOpacity>
+                        <TouchableOpacity  style={mode == "dark" ? [styles.daynight, styles.night ]: styles.daynight} onPress={() => {
+                            setMode("dark")
+                            updateUserData()
+                        }}>
+                            <Ionicons style={mode == "dark" ? [styles.daynight.icon, styles.night.icon ]: styles.daynight.icon} name="ios-moon" size={24} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ScrollView>
+        </>
+    )
 }
