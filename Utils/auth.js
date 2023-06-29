@@ -1,4 +1,4 @@
-import { param } from './config';
+// import { param } from './config';
 
 const HOST = "http://192.168.1.52:6500/api/v1/";
 

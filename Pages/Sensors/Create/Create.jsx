@@ -101,18 +101,12 @@ export default function CreateSensor() {
 				/>
 			</View>
 			<View style={styles.inputGroup}>
-<<<<<<< HEAD
 				<Text style={styles.label}>Pièce</Text>
-=======
-				<Text style={styles.label}>Piece</Text>
-				{/*
->>>>>>> 0ee8e1f2a500d7ed777bd7982ac59f38f8964a1e
 				<RNPickerSelect
 					onValueChange={(value) => setRoom(value)}
 					items={pickerItems}
 					style={pickerSelectStyles[mode]}
 				/>
-				*/}
 				<TextInput
 					style={styles.hidden}
 					defaultValue={toString(room)}
