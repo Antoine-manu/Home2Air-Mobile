@@ -61,7 +61,8 @@ export default function CreateSensor() {
 	const styles = StyleSheet.create({
 		content: {
 			width: '90%',
-			alignSelf: 'center'
+			alignSelf: 'center',
+			flex: 1
 		},
 		input: {
 			width: '100%',

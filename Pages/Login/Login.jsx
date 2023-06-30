@@ -73,7 +73,8 @@ export default function Login({ navigation }) {
 
 	const styles = StyleSheet.create({
 		content: {
-			marginTop: 80
+			marginTop: 80,
+			height: '100%'
 		},
 		logo: {
 			width: 380,
@@ -118,7 +119,7 @@ export default function Login({ navigation }) {
 		},
 		add: {
 			marginTop: 'auto',
-			bottom: 40,
+			bottom: "35%",
 			flexDirection: 'row'
 		},
 		addText: {

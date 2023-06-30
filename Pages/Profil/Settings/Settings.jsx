@@ -12,12 +12,14 @@ import {
 import { color, theme } from '../../../assets/styles/style';
 import Text from '../../../Components/Text';
 import { useContext, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import {Ionicons, Feather, MaterialCommunityIcons, MaterialIcons, FontAwesome5} from '@expo/vector-icons';
 import {UserContext} from "../../../Context/UserContext";
 import {fetchRoute} from "../../../Utils/auth";
+import {useNavigation} from "@react-navigation/native";
 
 export default function Settings(){
 
+	const navigation = useNavigation();
     const userContext = useContext(UserContext);
     const [isEnabled, setIsEnabled] = useState(userContext.isNotif);
     const setNotif = userContext.setIsNotif
@@ -100,6 +102,34 @@ export default function Settings(){
 			icon: {
 				color: color[mode].light
 			}
+		},
+		red : {
+			color : color[mode].red
+		},
+		material : {
+			marginTop: 12,
+		},
+		edit : {
+			marginTop: 4,
+		},
+		between : {
+			marginTop : 8,
+			marginBottom : 16,
+			borderWidth: 1,
+			width: "120%",
+			borderColor: color[mode].grey
+		},
+		disconnect : {
+			marginTop : 12,
+		},
+		info : {
+			marginTop : 4,
+		},
+		right : {
+			marginTop : 16,
+		},
+		spaces : {
+			marginTop: 4
 		}
 	});
 
@@ -139,6 +169,34 @@ export default function Settings(){
                         </TouchableOpacity>
                     </View>
                 </View>
+				<View style={styles.between}></View>
+				<TouchableOpacity style={[styles.switchGroupe, styles.spaces]} onPress={() => navigation.navigate("Spaces")}>
+					<View style={styles.switchGroupe.label}>
+						<Text style={styles.switchGroupe.label.title}>Vos espaces</Text>
+						<Text style={styles.switchGroupe.label.subtitle}>Configurez vos espaces et leurs pièces associés</Text>
+					</View>
+					<FontAwesome5 style={styles.right}  name="angle-right" size={24} color={color[mode].text} />
+				</TouchableOpacity>
+				<View style={styles.between}></View>
+				<TouchableOpacity style={[styles.switchGroupe, styles.edit]} onPress={() => navigation.navigate("EditProfil")}>
+					<View style={styles.switchGroupe.label}>
+						<Text style={styles.switchGroupe.label.title}>Vos informations</Text>
+						<Text style={styles.switchGroupe.label.subtitle}>Editer les informations de votre profil </Text>
+					</View>
+					<Feather name="edit" style={styles.edit} size={24} color={color[mode].text} />
+				</TouchableOpacity>
+				<TouchableOpacity style={[styles.switchGroupe, styles.info, styles.disconnect]}>
+					<View style={styles.switchGroupe.label}>
+						<Text style={styles.switchGroupe.label.title}>Réinitialiser votre mot de passe</Text>
+						<Text style={styles.switchGroupe.label.subtitle}>Envoyer un mail permettant de réinitialiser votre mot de passe</Text>
+					</View>
+					<MaterialIcons name="privacy-tip" style={styles.material} size={24} color={color[mode].text} />
+				</TouchableOpacity>
+				<View style={styles.between}></View>
+				<TouchableOpacity style={[styles.switchGroupe, styles.edit]} onPress={() => userContext.setToken(null)}>
+						<Text style={[styles.switchGroupe.label.title, styles.red]}>Déconnection</Text>
+					<MaterialCommunityIcons name="exit-to-app" size={26} color={color[mode].red} />
+				</TouchableOpacity>
             </ScrollView>
         </>
     )
