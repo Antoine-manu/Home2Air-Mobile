@@ -49,12 +49,14 @@ export default function Sensor({ navigation, route }) {
   }, []);
 
   const fetchProbeDatas = async () => {
+    console.log('url', url)
     const response = await fetchRoute(
       "probe/",
       "post",
       { address: url },
       userContext.token
     );
+    console.log(response.data)
     //La dernière data de stream, le 3ème élément du tableau response
     setTemperature(response[1][response[1].length - 1].temperature);
     setPressure(response[1][response[1].length - 1].pressure);
