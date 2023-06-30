@@ -52,6 +52,7 @@ export default function EditRoom(){
                 userContext.token
             );
             if (response) {
+                navigation.goBack();
             }
         } catch (error) {
             console.error('erroor ' , error);
