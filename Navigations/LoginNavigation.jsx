@@ -15,10 +15,17 @@ import CustomGearSensor from "./CustomSensorsTitle/CustomGearSensor";
 import CustomGearProfil from "./CustomSensorsTitle/CustomGearProfil";
 import CustomSingleNotif from "./CustomSensorsTitle/CustomSingleNotif";
 import CustomTitleSensor from "./CustomSensorsTitle/CustomTitleSensor";
+import CustomSpaces from "./CustomSensorsTitle/CustomSpaces";
 import Profil from "../Pages/Profil/Profil";
+import Space from "../Pages/Spaces";
+import CreateSpace from "../Pages/Spaces/Create";
+import SingleSpace from "../Pages/Spaces/Single";
+import ShareSpace from "../Pages/Spaces/Share";
 import Settings from "../Pages/Profil/Settings";
 import {color} from "../assets/styles/style";
 import {useContext} from "react";
+import CustomTitleSpace from "./CustomSensorsTitle/CustomTitleSpace";
+import EditRoom from "../Pages/Room/Edit";
 
 export default function LoginNavigation() {
 	const Stack = createNativeStackNavigator();
@@ -192,6 +199,71 @@ export default function LoginNavigation() {
 						},
 						title: "Notification",
 						headerRight : (props)=> <CustomSingleNotif	 {...props} />
+					}}
+				/>
+				<Stack.Screen
+					name="Spaces"
+					component={Space}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Espaces",
+					}}
+				/>
+				<Stack.Screen
+					name="CreateSpace"
+					component={CreateSpace}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Créer un espace",
+					}}
+				/>
+				<Stack.Screen
+					name="SingleSpace"
+					component={SingleSpace}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						headerTitle: (props)=> <CustomTitleSpace {...props} />,
+					}}
+				/>
+				<Stack.Screen
+					name="ShareSpace"
+					component={ShareSpace}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Partager l'espace"
+					}}
+				/>
+				<Stack.Screen
+					name="EditRoom"
+					component={EditRoom}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Modifier votre piece"
 					}}
 				/>
 			</Stack.Group>

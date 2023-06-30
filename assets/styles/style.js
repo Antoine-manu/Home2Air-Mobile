@@ -2,6 +2,7 @@ export const color = {
 	dark: {
 		primary: '#036DDF',
 		red: '#E54E4E',
+		redSecondary: '#d08686',
 		blue: '#036DDF',
 		yellow: '#ffcc00',
 		green: '#00A67F',
@@ -22,6 +23,7 @@ export const color = {
 	light: {
 		primary: '#036DDF',
 		red: '#E54E4E',
+		redSecondary: '#d08686',
 		blue: '#036DDF',
 		yellow: '#ffcc00',
 		green: '#00A67F',
@@ -156,8 +158,7 @@ export const theme = {
 		container: {
 			width: '100%',
 			alignItems: 'center',
-			marginTop: 0,
-			flex: 1
+			marginTop: 0
 		},
 		inputGroup: {
 			flexDirection: 'column',

@@ -13,7 +13,7 @@ import { theme, color } from '../assets/styles/style';
 import {useNavigation} from "@react-navigation/native";
 import {UserContext} from "../Context/UserContext";
 
-const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
+const Select = ({ _label, data, onSelect, _selected, defaultValue, title }) => {
 	const navigation = useNavigation();
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
@@ -30,8 +30,21 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 			alignItems: 'center',
 			backgroundColor: color[mode].secondaryBackground,
 			height: 40,
+			borderRadius: 8,
+			marginTop: 8,
 			paddingLeft: 12,
 			zIndex: 1
+		},
+		buttonTitle: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			height: 40,
+			paddingLeft: 12,
+			zIndex: 1,
+			text : {
+				fontSize: 18,
+				fontWeight: "bold"
+			}
 		},
 		buttonText: {
 			/*flex: 1,
@@ -46,12 +59,24 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 			shadowOffset: { height: 4, width: 0 },
 			shadowOpacity: 0.3
 		},
+		dropdownTitle: {
+			position: 'absolute',
+			backgroundColor: color[mode].secondaryBackground,
+			width: '100%',
+			borderRadius: 8,
+			shadowColor: '#464646',
+			shadowRadius: 4,
+			shadowOffset: { height: 4, width: 0 },
+			shadowOpacity: 0.3
+		},
 		overlay: {
 			marginLeft: '5%',
 			width: '90%',
 			height: '100%'
 		},
 		item: {
+			borderBottomWidth: 1,
+			borderColor: color[mode].grey,
 			paddingHorizontal: 10,
 			paddingVertical: 10,
 		}
@@ -92,9 +117,10 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 				style={styles.overlay}
 				onPress={() => setVisible(false)}
 			>
-				<View style={[styles.dropdown, { top: dropdownTop }]}>
+				<View style={[title == true ? styles.dropdown : styles.dropdownTitle, { top: dropdownTop }]}>
 					<FlatList
 						data={data}
+						extraData={data}
 						renderItem={renderItem}
 						keyExtractor={(data) => data.value} // Updated keyExtractor
 					/>
@@ -106,11 +132,11 @@ const Select = ({ _label, data, onSelect, _selected, defaultValue }) => {
 	return (
 		<TouchableOpacity
 			ref={selectButtonRef}
-			style={styles.button}
+			style={title == "true" ? styles.buttonTitle : styles.button}
 			onPress={toggleDropdown}
 		>
 			{renderDropdown()}
-			<Text style={styles.buttonText}>
+			<Text style={title == "true" ? styles.buttonTitle.text : styles.buttonText}>
 				{selected
 					? selected && `${selected.label}`
 					: _default}

@@ -1,4 +1,6 @@
-const HOST = "http://192.168.1.52:6500/api/v1/";
+import param from "../config";
+
+const HOST = param;
 
 import * as SecureStore from "expo-secure-store";
 import createAlert from "./alert";

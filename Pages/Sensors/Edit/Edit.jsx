@@ -36,7 +36,8 @@ export default function EditSensor({ navigation, route }) {
 	const styles = StyleSheet.create({
 		content: {
 			width: '90%',
-			alignSelf: 'center'
+			alignSelf: 'center',
+			flex: 1
 		},
 		input: {
 			alignItems: 'center',
@@ -101,6 +102,10 @@ export default function EditSensor({ navigation, route }) {
 			fontWeight: 'bold',
 			alignSelf: 'flex-start',
 			marginTop: 24
+		},
+		select : {
+			borderRadius: 8,
+			marginTop: 8
 		}
 	});
 	const selectStyle = {
@@ -170,7 +175,6 @@ export default function EditSensor({ navigation, route }) {
 			temperature: temperature
 		};
 		for (const param in parameters) {
-			console.log(key, value);
 			if (key == param) {
 				parameters[key] = value;
 			}
@@ -185,7 +189,6 @@ export default function EditSensor({ navigation, route }) {
 		};
 
 		for (const input in inputs) {
-			console.log('key', key, value);
 			if (key == input) {
 				inputs[key] = value.value ? value.value : value;
 			}
@@ -197,12 +200,11 @@ export default function EditSensor({ navigation, route }) {
 			inputs,
 			userContext.token
 		);
-		console.log(response);
 	};
 
 	const deleteSensor = async () => {
 		const inputs = {
-			deleted: 1
+			deleted_at: 1
 		};
 		const response = await fetchRoute(
 			`sensor/update/${id}`,
@@ -210,7 +212,9 @@ export default function EditSensor({ navigation, route }) {
 			inputs,
 			userContext.token
 		);
-		console.log(response);
+		if(response){
+			navigation.goBack()
+		}
 	};
 
 	const findMonitoredRoom = async (id) => {
@@ -229,10 +233,10 @@ export default function EditSensor({ navigation, route }) {
 	return (
 		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
 			<Text style={styles.title}>Informations</Text>
-			<View style={styles.inputGroup}>
-				<Text style={styles.label}>Nom</Text>
+			<View style={theme[mode].inputGroup}>
+				<Text style={theme[mode].inputGroup.label}>Nom</Text>
 				<TextInput
-					style={[styles.input, { color: color[mode].text }]}
+					style={theme[mode].inputGroup.input}
 					placeholder="Ex : Home"
 					defaultValue={name}
 					onChangeText={(value) => {
@@ -242,10 +246,10 @@ export default function EditSensor({ navigation, route }) {
 				/>
 			</View>
 			<View style={theme[mode].inputGroup}>
-				<Text>Pièce</Text>
+				<Text style={theme[mode].inputGroup.label}>Pièce</Text>
 				<Select
 					data={pickerItems}
-					style={theme[mode].inputGroup.input}
+					style={[theme[mode].inputGroup.input, styles.select]}
 					onSelect={(value) => {
 						setSelect(value);
 						updateSensorData('room_id', value);

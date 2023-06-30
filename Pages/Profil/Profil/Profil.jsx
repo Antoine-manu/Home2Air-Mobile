@@ -26,7 +26,6 @@ export default function Profil(){
     const [username, setUsername] = useState(userContext.userId);
     const [picture, setPicture] = useState({});
     const [loading, setIsLoading] = useState({});
-    console.log(userContext.token);
 
     useEffect(() => {
         findUserData();
@@ -41,7 +40,6 @@ export default function Profil(){
                 userContext.token
             );
             if (response) {
-                console.log('r', response);
                 setEmail(response.email)
                 setFirstName(response.first_name)
                 setLastName(response.last_name)

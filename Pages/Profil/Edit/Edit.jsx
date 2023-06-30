@@ -41,7 +41,6 @@ export default function Profil(){
                 userContext.token
             );
             if (response) {
-                console.log('r', response);
                 setEmail(response.email)
                 setFirstName(response.first_name)
                 setLastName(response.last_name)
@@ -67,7 +66,6 @@ export default function Profil(){
                 userContext.token
             );
             if (response) {
-                console.log('r', response);
                 navigation.navigate('Profil')
             }
         } catch (error) {
@@ -79,9 +77,9 @@ export default function Profil(){
 
     const styles = StyleSheet.create({
         content : {
-            marginTop: 24,
             width: "90%",
-            alignSelf: "center"
+            alignSelf: "center",
+            flex: 1
         },
         image: {
             width: 150,
@@ -126,7 +124,6 @@ export default function Profil(){
     return(
         <>
             <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
-                <Image style={styles.image} source={require('../../../assets/pp.jpeg')}/>
                 <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Prénom</Text>
                     <TextInput style={theme[mode].inputGroup.input} defaultValue={firstname}/>
