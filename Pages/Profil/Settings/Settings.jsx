@@ -30,6 +30,7 @@ export default function Settings(){
         updateUserData()
     };
     const mode = userContext.theme
+		const setDarkMode = userContext.setTheme;
     const setMode = userContext.setTheme
     const id = userContext.userId
 
