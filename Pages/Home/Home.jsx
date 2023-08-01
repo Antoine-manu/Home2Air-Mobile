@@ -126,6 +126,7 @@ export default function Home() {
   useEffect(() => {
     getPlacesList();
   }, [focused]);
+  
   const searchRooms = async place_id => {
     const rooms = await fetchRoute(
       "room/find-by-place",
@@ -173,7 +174,6 @@ export default function Home() {
   };
 
   // Define a function to render a SmallSensor component for each sensor in the search results
-
   useEffect(
     () => {
       const renderSearchResults = () => {
@@ -272,42 +272,6 @@ export default function Home() {
             ) :
             ""
           }
-          {/* {searchResults
-          ? searchResults.map(sensor =>
-              <SmallSensor id={sensor.id} name={sensor.name} />
-            )
-          : place.map(
-              // Pass the name prop to SmallSensor
-              place =>
-                <View key={place.id}>
-                  <Text style={styles.sensors.title}>
-                    {place.name}
-                  </Text>
-                  <Text style={styles.sensors.underText}>
-                    {place.Room.reduce(
-                      (sum, room) => sum + room.Sensor.length,
-                      0
-                    ) + " "}
-                    capteurs
-                  </Text>
-                  {place.Room.map(room =>
-                    <View key={room.id}>
-                      <Text>
-                        {room.name}
-                      </Text>
-                      {room.Sensor.map(
-                        sensor =>
-                          sensor.deleted !== 1 &&
-                          <SmallSensor
-                            key={sensor.id}
-                            id={sensor.id}
-                            name={sensor.name}
-                          />
-                      )}
-                    </View>
-                  )}
-                </View>
-            )} */}
         </View>
         <View style={styles.compense}></View>
       </ScrollView>

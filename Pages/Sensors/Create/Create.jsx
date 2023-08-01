@@ -118,7 +118,7 @@ export default function CreateSensor() {
 				<TextInput
 					style={styles.hidden}
 					defaultValue={toString(room)}
-					value={room}
+					value={toString(room)}
 					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>

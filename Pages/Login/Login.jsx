@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
 	StyleSheet,
 	View,
@@ -13,8 +13,11 @@ import { theme, color } from '../../assets/styles/style';
 import { UserContext } from '../../Context/UserContext';
 import { fetchFromStorage, fetchRoute } from '../../Utils/auth';
 
+import CryptoJS from 'react-native-crypto-js';
+import env from '../../.config';
+
 export default function Login({ navigation }) {
-	const [email, setEmail] = useState("Daveloper@test.com");
+	const [email, setEmail] = useState('Daveloper@test.com');
 	const [password, setPassword] = useState('test');
 	const [error, setError] = useState(null);
 	const [connected, setConnected] = useState(false);
@@ -26,11 +29,21 @@ export default function Login({ navigation }) {
 		await SecureStore.setItemAsync(key, value);
 	};
 
+	function encryptPassword() {
+		console.log(JSON.stringify(env.SECRET_KEY));
+		console.log(password);
+		return CryptoJS.AES.encrypt(
+			password,
+			env.SECRET_KEY
+		).toString();
+	}
+
 	const loginUser = async () => {
 		try {
+			console.log();
 			const jsonData = await fetchRoute('/auth/login', 'POST', {
 				email,
-				password
+				password: encryptPassword()
 			});
 			if (jsonData.userId && jsonData.token) {
 				await saveUserData('userId', JSON.stringify(jsonData.userId));
@@ -38,16 +51,21 @@ export default function Login({ navigation }) {
 				userContext.setUserId(jsonData.userId);
 				userContext.setToken(jsonData.token);
 				setConnected(true);
-				const id = jsonData.userId
-				const token = jsonData.token
+				const id = jsonData.userId;
+				const token = jsonData.token;
 				try {
-					const response = await fetchRoute('user/find-one-by-id', 'POST', {id}, token);
+					const response = await fetchRoute(
+						'user/find-one-by-id',
+						'POST',
+						{ id },
+						token
+					);
 					if (response) {
-						setDarkMode(response.darkMode == true ? "dark" : "light");
+						setDarkMode(response.darkMode == true ? 'dark' : 'light');
 						setIsNotif(response.active);
 					}
 				} catch (error) {
-					console.error("ERROR : ", error.message);
+					console.error('ERROR : ', error.message);
 					setError(error.message);
 				}
 			}
@@ -119,7 +137,7 @@ export default function Login({ navigation }) {
 		},
 		add: {
 			marginTop: 'auto',
-			bottom: "35%",
+			bottom: '35%',
 			flexDirection: 'row'
 		},
 		addText: {
