@@ -124,11 +124,10 @@ export default function EditSensor({ navigation, route }) {
 	};
 	useEffect(() => {
 		findSensorData();
-		getAllRooms();
 	}, []);
 
-	const getAllRooms = async () => {
-		const r = await fetchRoute('room/find-all', 'post', {}, userContext.token);
+	const getAllRooms = async id => {
+		const r = await fetchRoute('room/find-by-place', 'post', {id : id}, userContext.token);
 		setRooms(r);
 	};
 
@@ -161,6 +160,7 @@ export default function EditSensor({ navigation, route }) {
 				setTemperature(parameters.temperature);
 				setIsEnabled(parameters.notifications);
 				setIsLoading(false);
+				getAllRooms(response.id);
 			}
 		} catch (error) {
 			console.error(error);

@@ -10,6 +10,7 @@ import {
 import {color, theme} from "../../../assets/styles/style";
 import {useContext, useEffect, useState} from "react";
 import Text from "../../../Components/Text";
+import ShareButton from '../Share/ShareButton';
 import {UserContext} from "../../../Context/UserContext";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {fetchRoute} from "../../../Utils/auth";
@@ -26,6 +27,7 @@ export default function SingleSpace(){
     const [spaceName, setSpaceName] = useState();
     const [space, setSpace] = useState([]);
     const [newRoom, setNewRoom] = useState("");
+    const [addColor, setAddColor] = useState(color[mode].textSecondary);
 
     const route = useRoute();
     const isFocused = useIsFocused();
@@ -226,9 +228,9 @@ export default function SingleSpace(){
                     </View>
                 </View>
                 <View style={styles.inputGroup}>
-                    <TextInput style={[styles.inputGroup.input]} value={newRoom} placeholder={"Ajouter une nouvelle pièce"} onChangeText={setNewRoom}/>
+                    <TextInput style={[styles.inputGroup.input]} value={newRoom} onFocus={() =>setAddColor(addColor == color[mode].textSecondary ? color[mode].primary : color[mode].text )} placeholder={"Ajouter une nouvelle pièce"} onChangeText={setNewRoom}/>
                     <TouchableOpacity onPress={addRoom}>
-                        <Feather style={styles.iconAdd} name="plus-circle" size={24} color={color[mode].primary} />
+                        <Entypo style={styles.iconAdd} name="circle-with-plus" size={24} color={addColor} />
                     </TouchableOpacity>
                 </View>
                 {rooms.length > 0

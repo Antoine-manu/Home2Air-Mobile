@@ -1,7 +1,7 @@
 import param from "../config";
 
 const HOST = param;
-
+//import messaging from './firebaseConfig';
 import * as SecureStore from "expo-secure-store";
 import createAlert from "./alert";
 
@@ -54,7 +54,8 @@ export async function fetchRoute(route, method, params, token = "") {
       throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
     }
     // const json = await response.json();
-
+    /*const token = await messaging().getToken();
+    console.log(token)*/
     return await response.json();
   } catch (error) {
     console.error("Error while fetching:", error.message);

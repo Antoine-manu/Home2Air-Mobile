@@ -1,15 +1,18 @@
 import { View, TouchableOpacity } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import {FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import { theme, color } from "../assets/styles/style";
 import { useNavigation } from "@react-navigation/native";
-import { useContext } from "react";
+import {useContext, useEffect, useState} from "react";
 import Text from "./Text";
 import { UserContext } from "../Context/UserContext";
+import {fetchRoute} from "../Utils/auth";
 
 export default function SmallSensor({ id, name, address }) {
   const navigation = useNavigation();
+  const [aqi, setAqi] = useState();
   const userContext = useContext(UserContext);
   const mode = userContext.theme;
+  console.log('ICIIIII')
 
   const styles = {
     btnSmall: {
@@ -34,7 +37,11 @@ export default function SmallSensor({ id, name, address }) {
         alignItems: "flex-start",
         justifyContent: "space-between",
         textLayout: {
-          fontSize: 16
+          fontSize: 16,
+        },
+        aqi: {
+          fontSize: 16,
+          fontWeight: 'bold'
         }
       },
       right: {
@@ -50,6 +57,23 @@ export default function SmallSensor({ id, name, address }) {
       }
     }
   };
+
+  useEffect(() => {
+    fetchProbeDatas();
+  }, []);
+
+  const fetchProbeDatas = async () => {
+    const response = await fetchRoute(
+        "probe/",
+        "post",
+        { address: address },
+        userContext.token
+    );
+    if(response){
+      setAqi(response[2][2])
+    }
+  };
+
   return (
     <View style={[styles.smallSensor, theme[mode].shadow]}>
       <View style={styles.smallSensorLayout.left}>
@@ -57,7 +81,9 @@ export default function SmallSensor({ id, name, address }) {
           {name}
         </Text>
         {/* Use the name prop here */}
-        <Text style={styles.smallSensorLayout.left.textLayout}>-data- AQI</Text>
+        <Text style={[styles.smallSensorLayout.left.aqi, {color : aqi > 33 ? aqi > 66 ? '#00A67F' : '#F2B82F' : '#E54E4E'}]}>
+          {parseInt(aqi)} AQI  {aqi < 66 ?  aqi > 33 ? <FontAwesome name="warning" size={16} color={'#F2B82F'}/> : <FontAwesome5 name="skull" size={16} color={'#E54E4E'}/>: ''}
+        </Text>
       </View>
       <View style={styles.smallSensorLayout.right}>
         <TouchableOpacity

@@ -11,29 +11,36 @@ import {
 import RNPickerSelect from '@react-native-picker/picker';
 import { UserContext } from '../../../Context/UserContext';
 import Text from '../../../Components/Text';
+import QRScanner from '../../../Components/QRScanner';
 import { theme, pickerSelectStyles, color } from '../../../assets/styles/style';
 import { fetchRoute } from '../../../Utils/auth';
 import Select from "../../../Components/Select";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
+import {BarCodeScanner} from "expo-barcode-scanner";
+import view from "react-native-reanimated/src/reanimated2/component/View";
 
 export default function CreateSensor() {
 	const navigation = useNavigation();
-	const [name, setName] = useState('');
+	const [name, setName] = useState();
 	const [room, setRoom] = useState(0);
 	const [rooms, setRooms] = useState([]);
 	const [reference, setReference] = useState('');
 	const userContext = useContext(UserContext);
 	const mode = userContext.theme;
+	const route = useRoute();
+	const place = route.params.place
 
 	const getAllRooms = async () => {
 		// const tk = ;
-		const r = await fetchRoute('room/find-all', 'post', {}, userContext.token);
+		const r = await fetchRoute('room/find-by-place', 'post', {place : place.id}, userContext.token);
 		setRooms(r);
+		console.log(r)
 	};
 
 	useEffect(() => {
 		getAllRooms();
 	}, []);
+
 
 	const createSensor = async () => {
 		const createdBy = `${userContext.userId}`;
@@ -104,7 +111,7 @@ export default function CreateSensor() {
 					placeholder="Ex : Home"
 					placeholderTextColor={color[mode].textSecondary}
 					onChangeText={setName}
-					value={name}
+					defaultValue={name}
 				/>
 			</View>
 			<View style={theme[mode].inputGroup}>
@@ -128,7 +135,7 @@ export default function CreateSensor() {
 					style={[theme[mode].input, styles.input]}
 					placeholder="Référence"
 					onChangeText={setReference}
-					value={reference}
+					defaultValue={reference}
 					placeholderTextColor={color[mode].textSecondary}
 				/>
 			</View>

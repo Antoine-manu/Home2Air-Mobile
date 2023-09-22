@@ -9,22 +9,25 @@ import {
 } from "react-native";
 import Text from "../../Components/Text";
 import { theme, color } from "../../assets/styles/style";
-import { fetchRoute } from "../../Utils/auth";
+import {fetchFromStorage, fetchRoute} from "../../Utils/auth";
 import { UserContext } from "../../Context/UserContext";
+import * as SecureStore from "expo-secure-store";
+import {useNavigation} from "@react-navigation/native";
 
 export default function Register({ data }) {
   const [form, setForm] = useState({
-    username: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmed: ""
+    username: "MarieDubois54",
+    firstname: "Marie",
+    lastname: "Dubois",
+    email: "marie.dubois54000@gmail.com",
+    password: "mariedubois",
+    confirmed: "mariedubois"
   });
   const [error, setError] = useState(null);
   const [registered, setRegistered] = useState(false);
   const userContext = useContext(UserContext);
   const mode = userContext.theme;
+  const navigation = useNavigation();
 
   const handleChange = (name, value) => {
     setForm({ ...form, [name]: value });
@@ -51,7 +54,11 @@ export default function Register({ data }) {
           `HTTP Error: ${response.status} ${response.statusText}`
         );
       }
-      setRegistered(true);
+      if(response){
+        setRegistered(true);
+        console.log("youhou")
+        navigation.navigate("Login")
+      }
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation:",
@@ -62,37 +69,54 @@ export default function Register({ data }) {
   };
 
   const styles = StyleSheet.create({
+    content : {
+      width: "90%",
+      alignSelf: 'center',
+      flex: 1
+    },
     input: {
-      width: 300,
+      width: "100%",
       height: 40,
       backgroundColor: color[mode].secondaryBackground,
       borderRadius: 32,
       margin: 12,
       marginTop: 16,
-      paddingLeft: 18,
       elevation: 5,
       padding: 10
     },
     inputBox: {
-      marginTop: 26
+      marginTop: 26,
+      width: "90%",
     },
 
     btn: {
-      marginTop: 24,
-      backgroundColor: color[mode].primary,
-      padding: 12,
-      paddingLeft: 48,
-      paddingRight: 48,
-      borderRadius: 32
+      width: 200,
+      height: 40,
+      borderRadius: 32,
+      alignItems: 'center',
     },
     btnText: {
-      color: "#FFFFFF"
+      color: color[mode].light
+    },
+    cutomInput : {
+      marginTop : 16
+    },
+    bottom : {
+      backgroundColor: color[mode].background,
+      zIndex: 10,
+      width: '100%',
+      height: '15%',
+      marginTop: 'auto',
+      bottom: 0,
+      // position: "fixed",
+      alignItems: 'center',
+      justifyContent: 'flex-start'
     }
   });
 
 	return (
-		<ScrollView contentContainerStyle={theme[mode].container}>
-			<View style={styles.inputBox}>
+		<ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
+			<View style={theme[mode].inputGroup}>
 				{[
 					'username',
 					'firstname',
@@ -103,7 +127,7 @@ export default function Register({ data }) {
 				].map((field, index) => (
 					<TextInput
 						key={index}
-						style={theme[mode].input}
+						style={[theme[mode].inputGroup.input, styles.cutomInput]}
 						onChangeText={(value) => handleChange(field, value)}
 						value={form[field]}
 						placeholder={
@@ -121,19 +145,16 @@ export default function Register({ data }) {
 					/>
 				))}
 			</View>
-
-      <TouchableOpacity style={styles.btn}>
-        <Button
-          title="S'inscrire"
-          onPress={registerUser}
-          style={theme[mode].btnText}
-        />
-      </TouchableOpacity>
-      {error &&
-        <Text style={styles.errorText}>
-          {error}
-        </Text>}
-      {registered && <Text style={styles.success}>Enregistré</Text>}
+      <View style={styles.bottom}>
+        <TouchableOpacity style={[theme[mode].btn, styles.btn]} onPress={registerUser}>
+          <Text style={styles.btnText}>S'inscrire</Text>
+        </TouchableOpacity>
+        {error &&
+          <Text style={styles.errorText}>
+            {error}
+          </Text>}
+        {registered && <Text style={styles.success}>Enregistré</Text>}
+      </View>
     </ScrollView>
   );
 }

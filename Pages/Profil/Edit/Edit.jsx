@@ -58,15 +58,15 @@ export default function Profil(){
                 `user/update/${id}`,
                 'post',
                 {
-                    firstname: firstname,
-                    lastname: lastname,
+                    first_name: firstname,
+                    last_name: lastname,
                     username: username,
                     email: email,
                 },
                 userContext.token
             );
             if (response) {
-                navigation.navigate('Profil')
+                navigation.goBack()
             }
         } catch (error) {
             console.error('erroor ' , error);
@@ -126,19 +126,19 @@ export default function Profil(){
             <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
                 <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Prénom</Text>
-                    <TextInput style={theme[mode].inputGroup.input} defaultValue={firstname}/>
+                    <TextInput style={theme[mode].inputGroup.input} defaultValue={firstname} onChangeText={setFirstName}/>
                 </View>
                 <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Nom</Text>
-                    <TextInput style={theme[mode].inputGroup.input} defaultValue={lastname}/>
+                    <TextInput style={theme[mode].inputGroup.input} defaultValue={lastname} onChangeText={setLastName}/>
                 </View>
                 <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Email</Text>
-                    <TextInput style={theme[mode].inputGroup.input} defaultValue={email}/>
+                    <TextInput style={theme[mode].inputGroup.input} defaultValue={email} onChangeText={setEmail}/>
                 </View>
                 <View style={theme[mode].inputGroup}>
                     <Text style={theme[mode].inputGroup.label}>Identifiant</Text>
-                    <TextInput style={theme[mode].inputGroup.input} defaultValue={username}/>
+                    <TextInput style={theme[mode].inputGroup.input} defaultValue={username} onChangeText={setUsername}/>
                 </View>
                 <View style={styles.bottom}>
                     <TouchableOpacity style={[theme[mode].btn, styles.btn, theme[mode].shadow]} onPress={updateUserData}>

@@ -11,53 +11,36 @@ import {color, theme} from "../../../assets/styles/style";
 import {useContext, useEffect, useState} from "react";
 import Text from "../../../Components/Text";
 import {UserContext} from "../../../Context/UserContext";
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {fetchRoute} from "../../../Utils/auth";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-export default function CreateSpace(){
+export default function CreateRoom(){
 
     const userContext = useContext(UserContext);
     const mode = userContext.theme
+    const route = useRoute();
     const navigation = useNavigation()
-    const [id, setId] = useState(userContext.userId);
+    const place = route.params?.place;
     const [name, setName] = useState("");
 
-    useEffect(() => {
-        findUserData();
-    }, []);
-
-    const findUserData = async () => {
-        try {
+    const createRoom = async () => {
+        if(name !== ""){
+            const jsonData = {
+                name : name,
+                place_id : place
+            };
             const response = await fetchRoute(
-                'user/find-one-by-id',
-                'post',
-                { id },
+                'room/create',
+                'POST',
+                jsonData,
                 userContext.token
             );
-            if (response) {
-
+            if(response){
+                navigation.navigate("Home")
             }
-        } catch (error) {
-            console.error('erroor ' , error);
         }
     };
-
-    const createSpace = async () => {
-        const createdBy = `${userContext.userId}`;
-        const jsonData = {
-            name,
-            createdBy
-        };
-        const response = await fetchRoute(
-            'place/create',
-            'POST',
-            jsonData,
-            userContext.token
-        );
-        if(response){
-            navigation.navigate("CreateRoom", {place : response.place_id})
-        }
-    }
 
     const styles = StyleSheet.create({
         content : {
@@ -65,6 +48,35 @@ export default function CreateSpace(){
             width: "90%",
             alignSelf: "center",
             flex: 1
+        },
+        switchGroupe: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop : 18,
+            width: '110%',
+            padding: 20,
+            backgroundColor : color[mode].secondaryBackground,
+            label: {
+                width: '70%',
+                title: {
+                    fontSize: 14,
+                    fontWeight: 'bold'
+                },
+                subtitle: {
+                    fontSize: 12,
+                    color: color[mode].darkgrey,
+                    marginTop: 4
+                }
+            }
+        },
+        red : {
+            color : color[mode].red,
+            disable : {
+                color : color[mode].redSecondary,
+            }
+        },
+        iconDelete : {
+            marginTop : 12
         },
         bottom : {
             backgroundColor: color[mode].background,
@@ -82,13 +94,13 @@ export default function CreateSpace(){
         <>
             <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
                 <View style={theme[mode].inputGroup}>
-                    <Text style={theme[mode].inputGroup.label}>Nom de l'espace</Text>
+                    <Text style={theme[mode].inputGroup.label}>Nom de la pièce</Text>
                     <TextInput style={theme[mode].inputGroup.input} onChangeText={setName} value={name}/>
                 </View>
                 <View style={styles.bottom}>
-                    <TouchableOpacity style={[theme[mode].btn, theme[mode].shadow]} onPress={createSpace}>
+                    <TouchableOpacity style={[theme[mode].btn, theme[mode].shadow]} onPress={createRoom}>
                         <Text style={[theme[mode].btnText]}>
-                            Créer l'espace
+                            Créer la pièce
                         </Text>
                     </TouchableOpacity>
                 </View>

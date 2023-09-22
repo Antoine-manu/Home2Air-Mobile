@@ -5,7 +5,7 @@ import Passed from './Passed'
 import Custom from './Custom'
 import {color, theme} from "../../assets/styles/style";
 import {UserContext} from "../../Context/UserContext";
-import {useIsFocused, useNavigation} from "@react-navigation/native";
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import CustomCreateNotif from "../../Navigations/CustomSensorsTitle/CustomCreateNotif";
 
 export default function Notifications(){
@@ -16,6 +16,8 @@ export default function Notifications(){
     const notif = userContext.isNotif;
     const navigation = useNavigation();
     const isFocused = useIsFocused();
+    const route = useRoute();
+    const place = route.params?.place
 
     navigation.setOptions({
         headerRight: () => (

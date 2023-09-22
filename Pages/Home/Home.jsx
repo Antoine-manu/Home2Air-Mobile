@@ -12,7 +12,7 @@ import { theme, color, pickerSelectStyles } from "../../assets/styles/style";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Text from "../../Components/Text";
-import { FontAwesome, FontAwesome5, Octicons } from "@expo/vector-icons";
+import {FontAwesome, FontAwesome5, Octicons, Entypo, Feather} from "@expo/vector-icons";
 import SmallSensor from "../../Components/smallSensor";
 import { UserContext } from "../../Context/UserContext";
 import { useState, useContext, useEffect } from "react";
@@ -21,13 +21,17 @@ import Select from "../../Components/Select";
 export default function Home() {
   const navigation = useNavigation();
   const userContext = useContext(UserContext);
+  const setContextPlace = userContext.setPlace
   const mode = userContext.theme;
   const [place, setPlace] = useState([]);
   const [titleList, setTitleList] = useState([]);
+  const [loading, setLoading] = useState()
   const [rooms, setRooms] = useState([]);
+  const [dropdownDisplay, setDropdownDisplay] = useState("none");
   const [_default, setDefault] = useState([]);
   const [sensors, setSensors] = useState([]);
   const [search, setSearch] = useState("");
+  const [notifications, setNotifs] = useState([]);
   const [searchResults, setSearchResults] = useState(null); // Add a state variable for search results
   const focused = useIsFocused()
 
@@ -90,8 +94,16 @@ export default function Home() {
       justifyContent: 'flex-start'
     },
     btn: {
-      width: 250,
+      width: 45,
+      padding: 8,
+      paddingLeft: 8,
+      paddingRight: 8,
+      height: 45,
+      justifyContent: "center",
       alignItems: 'center',
+      disable : {
+        backgroundColor: color[mode].secondaryBackground
+      }
     },
     room: {
       justifyContent: 'center',
@@ -120,11 +132,81 @@ export default function Home() {
       text: {
         color: color[mode].textSecondary,
       }
+    },
+    link : {
+      color : color[mode].light
+    },
+    modal :{
+      justifyContent: "center",
+      borderRadius: 8,
+      width: '90%',
+      alignSelf: 'center',
+      backgroundColor: color[mode].secondaryBackground,
+      alignItems: "center",
+      padding: 12,
+      marginTop : 32,
+      underquote: {
+        textAlign: 'center',
+        color: 'darkgrey'
+      },
+      title: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 8
+      }
+    },
+    dropdown : {
+      position: "absolute",
+      bottom: 110,
+      display: dropdownDisplay,
+      borderRadius : 8,
+      item : {
+        padding : 16,
+        paddingRight : 64,
+        paddingLeft : 64,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: color[mode].secondaryBackground,
+        topI : {
+          borderTopLeftRadius : 8,
+          borderTopRightRadius : 8
+        },
+        bottomI : {
+          borderBottomLeftRadius : 8,
+          borderBottomRightRadius : 8
+        },
+        icon : {
+          marginRight: 4,
+        },
+        bordered : {
+          borderBottomWidth: 2,
+          borderBottomColor: color[mode].grey,
+        }
+      },
+    },
+    notifCount : {
+      position: "absolute",
+      top : -7,
+      right : -7,
+      alignItems: "center",
+      textAlign: "center",
+      backgroundColor: color[mode].primary,
+      text : {
+        color: color[mode].light,
+        fontWeight: "bold"
+      },
+      borderRadius : 32,
+      width : 18,
+      height : 18,
+      zIndex : 1222
     }
   });
 
   useEffect(() => {
+    setDefault([])
     getPlacesList();
+    getNotifList();
+    setDropdownDisplay("none")
   }, [focused]);
   const searchRooms = async place_id => {
     const rooms = await fetchRoute(
@@ -134,6 +216,18 @@ export default function Home() {
       userContext.token
     );
     setRooms(rooms);
+  };
+
+  const getNotifList = async () => {
+    const notif = await fetchRoute(
+        "/notifications/find-recent",
+        "post",
+        {
+          user_id: userContext.userId
+        },
+        userContext.token
+    );
+    setNotifs(notif);
   };
 
   const getPlacesList = async () => {
@@ -149,8 +243,12 @@ export default function Home() {
     setPlace(places);
     if (places.length > 0) {
       setDefault(places[0]);
+      setContextPlace(places[0]);
       const place_id = places[0].id
       searchRooms(place_id);
+      setLoading(false)
+    } else {
+      setLoading(true)
     }
   };
 
@@ -201,38 +299,36 @@ export default function Home() {
     setTitleList(pickerItems);
   }, [_default])
 
-  /*  function removeFromPicker(id){
-        pickerItems = pickerItems.filter(obj => obj.value !== id);
-        console.log('___________________ START')
-        pickerItems.map(r => {
-            console.log(r, id)
-        })
-        console.log('___________________ END')
-        console.log(pickerItems)
-    }*/
   return (
     <View style={[theme[mode].container, styles.content]}>
       <View style={styles.header.container}>
         <View style={styles.inputGroup}>
-          <Select
-            label="Sélectionnez une option"
-            data={titleList}
-            title="true"
-            onSelect={value => {
-              setDefault({ id: value.value });
-              searchRooms(value.value);
-            }}
-            defaultValue={_default.name}
-            style={styles.placeTitle}
-          />
+          {loading == true ?
+              "":
+              <Select
+                  label="Sélectionnez une option"
+                  data={titleList}
+                  title="true"
+                  onSelect={value => {
+                    setDefault({ id: value.value });
+                    searchRooms(value.value);
+                  }}
+                  defaultValue={_default.name}
+                  style={styles.placeTitle}
+              />
+          }
         </View>
         <View style={styles.header.right.layout}>
           <TouchableOpacity style={styles.header.right.bell}>
+            {notifications.length > 0 ?
+                <View style={styles.notifCount}>
+                  <Text style={styles.notifCount.text}>{notifications.length}</Text>
+                </View> : ""}
             <Octicons
               name="bell-fill"
               size={20}
               color={color[mode].text}
-              onPress={() => navigation.navigate("Notifications")}
+              onPress={() => navigation.navigate("Notifications", {place : _default})}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
@@ -249,6 +345,14 @@ export default function Home() {
         placeholderTextColor={color[mode].textSecondary}
       />
       <ScrollView style={styles.scrolldiv}>
+        {(loading == true) ?
+            <View style={styles.modal}>
+              <Text style={styles.modal.title}>Vous n'avez aucun espace de créer</Text>
+              <Image source={require('../../assets/space.png')} style={{width: 300, height: 300}}/>
+              <Text style={styles.modal.underquote}>Un espace représente le lieu dans lequel vous allez installer vos capteurs (par exemple votre maison ou bureau)</Text>
+              <TouchableOpacity style={theme[mode].btn} onPress={() => navigation.navigate("CreateSpace")}><Text style={[styles.link, ]}>Créez en un</Text></TouchableOpacity>
+            </View>
+            : ""}
         <View style={styles.sensors}>
           {(rooms.length > 0)
             ? rooms.map(room =>
@@ -272,53 +376,37 @@ export default function Home() {
             ) :
             ""
           }
-          {/* {searchResults
-          ? searchResults.map(sensor =>
-              <SmallSensor id={sensor.id} name={sensor.name} />
-            )
-          : place.map(
-              // Pass the name prop to SmallSensor
-              place =>
-                <View key={place.id}>
-                  <Text style={styles.sensors.title}>
-                    {place.name}
-                  </Text>
-                  <Text style={styles.sensors.underText}>
-                    {place.Room.reduce(
-                      (sum, room) => sum + room.Sensor.length,
-                      0
-                    ) + " "}
-                    capteurs
-                  </Text>
-                  {place.Room.map(room =>
-                    <View key={room.id}>
-                      <Text>
-                        {room.name}
-                      </Text>
-                      {room.Sensor.map(
-                        sensor =>
-                          sensor.deleted !== 1 &&
-                          <SmallSensor
-                            key={sensor.id}
-                            id={sensor.id}
-                            name={sensor.name}
-                          />
-                      )}
-                    </View>
-                  )}
-                </View>
-            )} */}
         </View>
         <View style={styles.compense}></View>
       </ScrollView>
-      <View style={styles.bottom}>
-        <TouchableOpacity
-          style={[theme[mode].btn, styles.btn]}
-          onPress={() => navigation.navigate("CreateSensor")}
-        >
-          <Text style={theme[mode].btnText}>Ajouter un capteur</Text>
-        </TouchableOpacity>
-      </View>
+      {loading == true ? "" :
+        <View style={styles.bottom}>
+          <View style={styles.dropdown}>
+            <TouchableOpacity style={[styles.dropdown.item, styles.dropdown.item.topI, styles.dropdown.item.bordered]} onPress={() => navigation.navigate("ChooseSensor", {place : _default})}>
+              <Feather style={styles.dropdown.item.icon} name="plus-circle" size={20} color={color[mode].primary} />
+              <Text style={styles.dropdown.item.text}> Ajouter un capteur</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.dropdown.item, styles.dropdown.item.bordered]} onPress={() => navigation.navigate("CreateRoom")}>
+              <Feather style={styles.dropdown.item.icon} name="plus-circle" size={20} color={color[mode].primary} />
+              <Text style={styles.dropdown.item.text}> Ajouter une pièce</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.dropdown.item, styles.dropdown.item.bottomI]} onPress={() => navigation.navigate("CreateSpace")}>
+              <Feather style={styles.dropdown.item.icon} name="plus-circle" size={20} color={color[mode].primary} />
+              <Text style={styles.dropdown.item.text}> Ajouter un espace</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            style={[theme[mode].btn, styles.btn, dropdownDisplay == "none" ? "" : styles.btn.disable]}
+            onPress={() => setDropdownDisplay(dropdownDisplay == "none" ? "flex": "none")}
+          >
+            {dropdownDisplay == "none" ?
+                <Entypo name="dots-three-horizontal" size={24} color={color[mode].light}/>
+                :
+                <Ionicons name="close" size={24} color={color[mode].text} />
+            }
+          </TouchableOpacity>
+        </View>
+      }
     </View>
   );
 }

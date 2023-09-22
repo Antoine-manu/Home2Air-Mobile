@@ -6,7 +6,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
-  ScrollView
+  ScrollView, Image
 } from "react-native";
 import { color, theme } from "../../../assets/styles/style";
 import {
@@ -36,6 +36,7 @@ export default function Sensor({ navigation, route }) {
   const [particules0, setPart0] = useState(0.0);
   const [particules1, setPart1] = useState(0.0);
   const [particules2, setPart2] = useState(0.0);
+  const [aqi, setAQI] = useState(0);
   const [daily, setDaily] = useState([]);
   const [days, setDays] = useState([]);
   const [date, setDate] = useState("");
@@ -43,10 +44,11 @@ export default function Sensor({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   let [tooltipPos, setTooltipPos] = useState(
     { x: 0, y: 0, visible: false, value: 0 })
+  const isfocused = navigation.isFocused()
   useEffect(() => {
     fetchProbeDatas().then(() => setIsLoading(false));
     // setIsLoading(false)
-  }, []);
+  }, [isfocused]);
 
   const fetchProbeDatas = async () => {
     console.log('url', url)
@@ -56,20 +58,20 @@ export default function Sensor({ navigation, route }) {
       { address: url },
       userContext.token
     );
-    console.log(response.data)
     //La dernière data de stream, le 3ème élément du tableau response
-    setTemperature(response[1][response[1].length - 1].temperature);
-    setPressure(response[1][response[1].length - 1].pressure);
-    setHumidity(response[1][response[1].length - 1].humidity);
-    setLight(response[1][response[1].length - 1].light);
-    setReduced(response[1][response[1].length - 1].reduced);
-    setOxidised(response[1][response[1].length - 1].oxidised);
-    setAmmoniac(response[1][response[1].length - 1].ammoniac);
-    setPart0(response[1][response[1].length - 1].particules0);
-    setPart1(response[1][response[1].length - 1].particules1);
-    setPart2(response[1][response[1].length - 1].particules2);
+    setTemperature(response[1].temperature);
+    setPressure(response[1].pressure);
+    setHumidity(response[1].humidity);
+    setLight(response[1].light);
+    setReduced(response[1].reduced);
+    setOxidised(response[1].oxidised);
+    setAmmoniac(response[1].ammoniac);
+    setPart0(response[1].particules0);
+    setPart1(response[1].particules1);
+    setPart2(response[1].particules2);
     setDaily(response[0]);
     setDate(getCurrentDate);
+    setAQI(response[2][2])
     setDays(getPastSixDays);
     let _labels = [];
     let past = getPastSixDays();
@@ -81,7 +83,7 @@ export default function Sensor({ navigation, route }) {
 
   const styles = StyleSheet.create({
     content: {
-      marginTop: 24
+      marginTop: 40
     },
     qualityText: {
       marginTop: 24,
@@ -105,12 +107,14 @@ export default function Sensor({ navigation, route }) {
       tag: {
         flexDirection: "row",
         alignItems: "center",
+        display: 'flex',
+        justifyContent: 'center',
         icon: {
           color: color[mode].primary
         },
         text: {
           fontSize: 16,
-          marginStart: 6,
+          marginStart: 2,
           fontWeight: "bold",
           color: color[mode].primary
         }
@@ -124,6 +128,15 @@ export default function Sensor({ navigation, route }) {
       marginStart: "5%",
       marginTop: 32,
       marginBottom: 8
+    },
+    chart : {
+      alignItems: "center",
+      marginLeft: 12
+    },
+    image : {
+      marginTop : 250,
+      width: 50,
+      height: 50,
     }
   });
 
@@ -177,17 +190,17 @@ export default function Sensor({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
       {isLoading ? (
-        <Text>Chargement...</Text>
+          <Image style={styles.image} source={require('../../../assets/loading.gif')}/>
       ) : (
         <>
           {daily && (
             <CircularProgress
-              value={Number(daily[date])}
+              value={aqi}
               maxValue={100}
               radius={100}
               duration={1000}
               activeStrokeColor={
-                daily[date] > 50 ? color[mode].red : color[mode].green
+                aqi < 33 ? color[mode].red :  aqi < 66 ? color[mode].yellow : color[mode].green
               }
               inActiveStrokeColor={color[mode].grey}
               title={"AQI"}
@@ -239,7 +252,7 @@ export default function Sensor({ navigation, route }) {
           <Text style={styles.text}>Qualité de l'air</Text>
 
           {daily && (
-            <View>
+            <View style={styles.chart}>
               <LineChart
                 data={{
                   labels: [labels[5], labels[4], labels[3], labels[2], labels[1], labels[0]],

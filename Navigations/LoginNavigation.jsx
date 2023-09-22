@@ -10,6 +10,8 @@ import CreateNotification from "../Pages/Notifications/Custom/Create";
 import EditNotification from "../Pages/Notifications/Custom/Edit";
 import SingleNotification from "../Pages/Notifications/Custom/Single";
 import Sensor from "../Pages/Sensors/Single";
+import Choose from "../Pages/Sensors/Create/Choose";
+import Scan from "../Pages/Sensors/Create/Scan";
 import {UserContext} from "../Context/UserContext";
 import CustomGearSensor from "./CustomSensorsTitle/CustomGearSensor";
 import CustomGearProfil from "./CustomSensorsTitle/CustomGearProfil";
@@ -26,6 +28,7 @@ import {color} from "../assets/styles/style";
 import {useContext} from "react";
 import CustomTitleSpace from "./CustomSensorsTitle/CustomTitleSpace";
 import EditRoom from "../Pages/Room/Edit";
+import CreateRoom from "../Pages/Room/Create";
 
 export default function LoginNavigation() {
 	const Stack = createNativeStackNavigator();
@@ -79,6 +82,32 @@ export default function LoginNavigation() {
 							color: color[mode].text
 						},
 						title:"Créer un capteur",
+					}}
+				/>
+				<Stack.Screen
+					name="ScanSensor"
+					component={Scan}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title:"Scannez un capteur",
+					}}
+				/>
+				<Stack.Screen
+					name="ChooseSensor"
+					component={Choose}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Selectionnez un mode de création"
 					}}
 				/>
 				<Stack.Screen
@@ -263,7 +292,20 @@ export default function LoginNavigation() {
 						headerTitleStyle : {
 							color: color[mode].text
 						},
-						title: "Modifier votre piece"
+						title: "Modifiez votre piece"
+					}}
+				/>
+				<Stack.Screen
+					name="CreateRoom"
+					component={CreateRoom}
+					options={{
+						headerStyle: {
+							backgroundColor: color[mode].backgroundHeader
+						},
+						headerTitleStyle : {
+							color: color[mode].text
+						},
+						title: "Ajouter une piece"
 					}}
 				/>
 			</Stack.Group>

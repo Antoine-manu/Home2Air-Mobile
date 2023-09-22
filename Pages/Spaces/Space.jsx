@@ -14,7 +14,7 @@ import {UserContext} from "../../Context/UserContext";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {fetchRoute} from "../../Utils/auth";
 import SmallSensor from "../../Components/smallSensor";
-import {MaterialIcons, FontAwesome5, Feather} from "@expo/vector-icons";
+import {MaterialIcons, FontAwesome5, Feather, Entypo} from "@expo/vector-icons";
 
 export default function Space(){
 
@@ -24,6 +24,7 @@ export default function Space(){
     const [places, setPlaces] = useState([]);
     const [newSpace, setNewSpace] = useState("");
     const [_default, setDefault] = useState([]);
+    const [addColor, setAddColor] = useState(color[mode].textSecondary);
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -117,15 +118,15 @@ export default function Space(){
         <>
             <ScrollView contentContainerStyle={[theme[mode].container, styles.content]}>
                 <View style={styles.inputGroup}>
-                    <TextInput style={[styles.inputGroup.input]} value={newSpace} placeholder={"Ajouter un nouvel espace"} onChangeText={setNewSpace}/>
+                    <TextInput style={[styles.inputGroup.input]} onFocus={() =>setAddColor(addColor == color[mode].textSecondary ? color[mode].primary : color[mode].text )} value={newSpace} placeholder={"Ajouter un nouvel espace"} onChangeText={setNewSpace}/>
                     <TouchableOpacity onPress={addSpace}>
-                        <Feather style={styles.iconAdd} name="plus-circle" size={24} color={color[mode].primary} />
+                        <Entypo style={styles.iconAdd} name="circle-with-plus" size={24} color={addColor} />
                     </TouchableOpacity>
                 </View>
                 {places.length > 0
                     ? places.map(place =>
                         place.createdBy == userContext.userId ?
-                            <TouchableOpacity style={styles.switchGroupe} onPress={() => navigateToSpaces(place.id, place.name)}>
+                            <TouchableOpacity style={styles.switchGroupe} onPress={() => navigateToSpaces(place.id, place.name)} key={place.id}>
                                 <View style={styles.switchGroupe.label}>
                                     <Text style={styles.switchGroupe.label.title}>{place.name}</Text>
                                     <Text style={styles.switchGroupe.label.subtitle}>{place.Room.length} piece(s)</Text>
